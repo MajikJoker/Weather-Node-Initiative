@@ -1,3 +1,4 @@
+/* General styles */
 * {
     margin: 0;
     padding: 0;
@@ -14,6 +15,7 @@ body {
     min-height: 100vh;
 }
 
+/* Container */
 .container {
     background: white;
     border-radius: 10px;
@@ -24,6 +26,7 @@ body {
     margin: 20px;
 }
 
+/* Header */
 .header {
     background: #00aaff;
     color: white;
@@ -61,6 +64,7 @@ body {
     background: #005f99;
 }
 
+/* Main content */
 .main-content {
     padding: 20px;
 }
@@ -78,11 +82,6 @@ body {
     align-items: center;
 }
 
-.weather-icon img {
-    width: 100px;
-    height: 100px;
-}
-
 .weather-info {
     margin-left: 20px;
 }
@@ -91,6 +90,7 @@ body {
     margin-bottom: 10px;
 }
 
+/* Forecast grid */
 .forecast-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -99,13 +99,13 @@ body {
 
 .forecast-day {
     text-align: center;
+    background: #f0f8ff;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.forecast-day img {
-    width: 60px;
-    height: 60px;
-}
-
+/* Footer */
 .footer {
     background: #00aaff;
     color: white;
