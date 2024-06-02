@@ -2,13 +2,17 @@ from flask import Flask, render_template, request, redirect, url_for
 from pymongo import MongoClient
 from pymongo.server_api import ServerApi
 from werkzeug.security import generate_password_hash, check_password_hash
+import certifi
 
 app = Flask(__name__)
 
 # MongoDB connection
-uri = "mongodb+srv://bhone:<password>@test.5zngklh.mongodb.net/?retryWrites=true&w=majority&appName=test"
+uri = "mongodb+srv://bhone:ASbtsVpm5fnUd6wv@test.5zngklh.mongodb.net/?retryWrites=true&w=majority&appName=test"
 
-client = MongoClient(uri, server_api=ServerApi('1'))
+# Specify the path to the cacert.pem file
+ca_cert_path = "/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/certifi/cacert.pem"
+
+client = MongoClient(uri, tlsCAFile=ca_cert_path, server_api=ServerApi('1'))
 db = client['test']  # Replace 'test' with your database name
 users_collection = db['users']  # Replace 'users' with your collection name
 
