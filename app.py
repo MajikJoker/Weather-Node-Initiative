@@ -7,7 +7,6 @@ import os
 # Load environment variables from .env file
 load_dotenv()
 
-
 # MongoDB connection
 mongo_uri = os.environ.get('MONGO_URI')
 client = MongoClient(mongo_uri)
@@ -18,6 +17,9 @@ users = db["users"]
 
 # Instantiating new object with "name"
 app = Flask(__name__)
+
+# Secret key
+app.secret_key = os.environ.get('SECRET_KEY')
 
 # Routes
 @app.route('/')
