@@ -4,17 +4,20 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
 import os
 
-
 # Load environment variables from .env file
 load_dotenv()
 
-app = Flask(__name__)
 
 # MongoDB connection
 mongo_uri = os.environ.get('MONGO_URI')
 client = MongoClient(mongo_uri)
-db = client["database_name"]
+
+# Adding in database and collection from MongoDB Atlas
+db = client["userManagement"]
 users = db["users"]
+
+# Instantiating new object with "name"
+app = Flask(__name__)
 
 # Routes
 @app.route('/')
