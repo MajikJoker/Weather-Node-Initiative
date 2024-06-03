@@ -1,11 +1,12 @@
+import os
 from flask import Flask, render_template, request, redirect, url_for
 from pymongo import MongoClient
-import os
 
 app = Flask(__name__)
 
 # MongoDB connection
-client = MongoClient(os.getenv('MONGO_URI', "mongodb+srv://bhone:ASbtsVpm5fnUd6wv@test.5zngklh.mongodb.net/userManagement"))
+mongo_uri = os.environ.get('MONGO_URI')
+client = MongoClient(mongo_uri)
 db = client.userManagement
 users_collection = db.users
 
@@ -45,4 +46,4 @@ def logged_home():
     return render_template('loggedhome.html')
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8090)
+    app.run(host='0.0.0.0', port=8000)
