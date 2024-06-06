@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 from pymongo import MongoClient
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
@@ -35,6 +35,7 @@ def login():
         user = users.find_one({"username": username})
 
         if user and check_password_hash(user['password'], password):
+            session['user'] = username
             return redirect(url_for('loggedhome'))
         else:
             flash("Invalid username or password")
