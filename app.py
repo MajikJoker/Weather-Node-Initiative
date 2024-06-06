@@ -72,6 +72,11 @@ def register():
 def loggedhome():
     return render_template('loggedhome.html')
 
+@app.route('/logout', methods=['POST'])
+def logout():
+    session.pop('user', None)
+    return redirect(url_for('home'))
+
 if __name__ == '__main__':
     app.debug = True
     app.run(host='0.0.0.0', port=8000)

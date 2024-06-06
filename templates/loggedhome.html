@@ -3,12 +3,14 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Home</title>
+    <title>Logged Home</title>
 </head>
 
 <body>
     <h1>Welcome user!</h1>
-
+    <form action="{{ url_for('logout') }}" method="post">
+        <button type="submit">Logout</button>
+    </form>
 </body>
 
 </html>
