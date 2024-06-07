@@ -29,15 +29,15 @@ def home():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        email = request.form.get('email')  # Changed from username to email
+        email = request.form.get('email')
         password = request.form.get('password')
-        user = users.find_one({"email": email})  # Changed from username to email
+        user = users.find_one({"email": email})
 
         if user and check_password_hash(user['password'], password):
-            session['user'] = email  # Changed from username to email
+            session['user'] = email
             return redirect(url_for('loggedhome'))
         else:
-            flash("Invalid email or password")  # Updated error message
+            flash("Invalid email or password")
             return redirect(url_for('login'))
 
     return render_template('login.html')
@@ -45,18 +45,18 @@ def login():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        first_name = request.form.get('first_name')  # Added first name field
-        email = request.form.get('email')  # Changed from username to email
+        first_name = request.form.get('first_name')
+        email = request.form.get('email')
         password = request.form.get('password')
 
-        if users.find_one({"email": email}):  # Changed from username to email
-            flash("Email already exists")  # Updated error message
+        if users.find_one({"email": email}):
+            flash("Email already exists")
             return redirect(url_for('register'))
 
         hashed_password = generate_password_hash(password, method='sha256')
         user_data = {
-            "first_name": first_name,  # Added first name field
-            "email": email,  # Changed from username to email
+            "first_name": first_name,
+            "email": email,
             "password": hashed_password
         }
 
@@ -73,11 +73,11 @@ def register():
 @app.route('/loggedhome')
 def loggedhome():
     if 'user' in session:
-        email = session['user']  # Changed from username to email
-        user = users.find_one({"email": email})  # Retrieve user data from MongoDB
+        email = session['user']
+        user = users.find_one({"email": email})
         if user:
-            first_name = user.get('first_name', 'User')  # Get the first name from user data, default to 'User' if not found
-            return render_template('loggedhome.html', first_name=first_name)  # Pass first_name to the template
+            first_name = user.get('first_name', 'User')
+            return render_template('loggedhome.html', first_name=first_name)
         else:
             flash("User not found")
             return redirect(url_for('login'))
