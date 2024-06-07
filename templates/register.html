@@ -97,7 +97,7 @@
 
         .form-group .show-password {
             position: absolute;
-            top: 50%;
+            top: 65%;
             right: 10px;
             transform: translateY(-50%);
             cursor: pointer;
@@ -106,13 +106,25 @@
         .terms {
             display: flex;
             align-items: center;
-            font-size: 12px;
-            margin: auto;
+            font-size: 16px;
+            margin-bottom: 20px;
             text-align: left;
         }
 
         .terms input {
-            margin: auto;
+            margin-right: 10px;
+            vertical-align: middle;
+            width: auto;
+            /* Added */
+            height: auto;
+            /* Added */
+        }
+
+        .terms label {
+            display: flex;
+            align-items: center;
+            margin: 0;
+            /* Remove default margin */
         }
 
         .submit-btn {
