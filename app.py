@@ -38,9 +38,9 @@ def login():
             return redirect(url_for('loggedhome'))
         else:
             flash("Invalid email or password")  # Updated error message
-            return redirect(url_for('login'))
+            return redirect(url_for('loggedhome'))
 
-    return render_template('login.html')
+    return render_template('loggedhome.html')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -66,9 +66,9 @@ def register():
             return redirect(url_for('login'))
         except Exception as e:
             flash(f"An error occurred: {str(e)}")
-            return redirect(url_for('register'))
+            return redirect(url_for('login'))
 
-    return render_template('register.html')
+    return render_template('login.html')
 
 @app.route('/loggedhome')
 def loggedhome():
