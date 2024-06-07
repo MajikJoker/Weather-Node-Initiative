@@ -71,6 +71,7 @@
 
         .form-group {
             margin-bottom: 20px;
+            position: relative;
         }
 
         .form-group input {
@@ -79,10 +80,7 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 16px;
-        }
-
-        .form-group input[type="checkbox"] {
-            width: auto;
+            box-sizing: border-box;
         }
 
         .form-group label {
@@ -93,10 +91,24 @@
             color: #555;
         }
 
+        .form-group .show-password {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+
         .terms {
+            display: flex;
+            align-items: center;
             font-size: 14px;
             margin-top: -10px;
             margin-bottom: 20px;
+        }
+
+        .terms input {
+            margin-right: 10px;
         }
 
         .submit-btn {
@@ -137,7 +149,9 @@
                     <div class="form-group">
                         <label for="password">Password</label>
                         <input type="password" id="password" name="password" required>
-                        <input type="checkbox" onclick="togglePassword()"> Show Password
+                        <span class="show-password" onclick="togglePassword()">
+                            <img src="eye-icon.png" alt="Show Password">
+                        </span>
                     </div>
                     <div class="form-group terms">
                         <input type="checkbox" id="terms" name="terms" required>
