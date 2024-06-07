@@ -55,9 +55,9 @@ def register():
 
         hashed_password = generate_password_hash(password, method='sha256')
         user_data = {
-            "first_name": first_name  # Added first name field
+            "first_name": first_name,  # Added first name field
             "email": email,  # Changed from username to email
-            "password": hashed_password,
+            "password": hashed_password
         }
 
         try:
