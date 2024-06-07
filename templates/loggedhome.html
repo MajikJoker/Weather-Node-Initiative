@@ -63,7 +63,6 @@
             text-decoration: none;
             display: flex;
             flex-direction: row;
-            /* Set to row layout */
             align-items: center;
             color: #333;
             margin-bottom: 10px;
@@ -120,7 +119,7 @@
                 <div>Role</div>
             </div>
             <div class="top-bar-profile-picture" onclick="toggleDropdown()">
-                <img src="{{ url_for('static', filename='/userpic/Bhone.png') }}">
+                <img src="{{ url_for('static', filename='/userpic/Bhone.png') }}" class="top-bar--profile-picture">
             </div>
             <div class="dropdown-content rounded" id="dropdown">
                 <div class="dropdown-item">
