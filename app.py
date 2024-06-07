@@ -74,7 +74,13 @@ def register():
 def loggedhome():
     if 'user' in session:
         email = session['user']  # Changed from username to email
-        return render_template('loggedhome.html', email=email)  # Changed from username to email
+        user = users.find_one({"email": email})  # Retrieve user data from MongoDB
+        if user:
+            first_name = user.get('first_name', 'User')  # Get the first name from user data, default to 'User' if not found
+            return render_template('loggedhome.html', first_name=first_name)  # Pass first_name to the template
+        else:
+            flash("User not found")
+            return redirect(url_for('login'))
     else:
         return redirect(url_for('login'))
 
