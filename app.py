@@ -3,7 +3,6 @@ from pymongo import MongoClient
 from werkzeug.security import generate_password_hash, check_password_hash
 from dotenv import load_dotenv
 import os
-import logging
 
 # Load environment variables from .env file
 load_dotenv()
@@ -30,15 +29,15 @@ def home():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form.get('username')
+        email = request.form.get('email')  # Changed from username to email
         password = request.form.get('password')
-        user = users.find_one({"username": username})
+        user = users.find_one({"email": email})  # Changed from username to email
 
         if user and check_password_hash(user['password'], password):
-            session['user'] = username
+            session['user'] = email  # Changed from username to email
             return redirect(url_for('loggedhome'))
         else:
-            flash("Invalid username or password")
+            flash("Invalid email or password")  # Updated error message
             return redirect(url_for('login'))
 
     return render_template('login.html')
@@ -46,17 +45,19 @@ def login():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        username = request.form.get('username')
+        email = request.form.get('email')  # Changed from username to email
         password = request.form.get('password')
+        first_name = request.form.get('first_name')  # Added first name field
 
-        if users.find_one({"username": username}):
-            flash("Username already exists")
+        if users.find_one({"email": email}):  # Changed from username to email
+            flash("Email already exists")  # Updated error message
             return redirect(url_for('register'))
 
         hashed_password = generate_password_hash(password, method='sha256')
         user_data = {
-            "username": username,
-            "password": hashed_password
+            "email": email,  # Changed from username to email
+            "password": hashed_password,
+            "first_name": first_name  # Added first name field
         }
 
         try:
@@ -72,8 +73,8 @@ def register():
 @app.route('/loggedhome')
 def loggedhome():
     if 'user' in session:
-        username = session['user']
-        return render_template('loggedhome.html', username=username)
+        email = session['user']  # Changed from username to email
+        return render_template('loggedhome.html', email=email)  # Changed from username to email
     else:
         return redirect(url_for('login'))
 
