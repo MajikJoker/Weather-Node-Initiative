@@ -45,9 +45,9 @@ def login():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
+        first_name = request.form.get('first_name')  # Added first name field
         email = request.form.get('email')  # Changed from username to email
         password = request.form.get('password')
-        first_name = request.form.get('first_name')  # Added first name field
 
         if users.find_one({"email": email}):  # Changed from username to email
             flash("Email already exists")  # Updated error message
@@ -55,9 +55,9 @@ def register():
 
         hashed_password = generate_password_hash(password, method='sha256')
         user_data = {
+            "first_name": first_name  # Added first name field
             "email": email,  # Changed from username to email
             "password": hashed_password,
-            "first_name": first_name  # Added first name field
         }
 
         try:
