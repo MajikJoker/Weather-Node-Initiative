@@ -4,6 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Register</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -75,7 +78,7 @@
         }
 
         .form-group input {
-            width: calc(100% - 20px);
+            width: calc(100% - 40px);
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -150,7 +153,7 @@
                         <label for="password">Password</label>
                         <input type="password" id="password" name="password" required>
                         <span class="show-password" onclick="togglePassword()">
-                            <img src="eye-icon.png" alt="Show Password">
+                            <i class="fas fa-eye"></i>
                         </span>
                     </div>
                     <div class="form-group terms">
@@ -166,10 +169,15 @@
     <script>
         function togglePassword() {
             var passwordField = document.getElementById("password");
+            var toggleIcon = document.querySelector(".show-password i");
             if (passwordField.type === "password") {
                 passwordField.type = "text";
+                toggleIcon.classList.remove("fa-eye");
+                toggleIcon.classList.add("fa-eye-slash");
             } else {
                 passwordField.type = "password";
+                toggleIcon.classList.remove("fa-eye-slash");
+                toggleIcon.classList.add("fa-eye");
             }
         }
     </script>
