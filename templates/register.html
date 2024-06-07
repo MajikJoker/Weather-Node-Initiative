@@ -56,7 +56,7 @@
             color: inherit;
         }
 
-        .signin-btn {
+        .login-btn {
             background-color: #fff;
             border: 2px solid #000;
             padding: 10px 20px;
@@ -71,7 +71,7 @@
             height: 80vh;
         }
 
-        .signup-box {
+        .register-box {
             background-color: #fff;
             padding: 40px;
             border-radius: 10px;
@@ -79,7 +79,7 @@
             text-align: center;
         }
 
-        .signup-box h1 {
+        .register-box h1 {
             margin-bottom: 30px;
         }
 
@@ -158,11 +158,11 @@
                 <img src="logo.png" alt="Logo">
                 <a href="{{ url_for('home') }}"><span>Weather Node Initiative</span></a>
             </div>
-            <a href="{{ url_for('login') }}"><button class="signin-btn">LOGIN</button></a>
+            <a href="{{ url_for('login') }}"><button class="login-btn">LOGIN</button></a>
         </div>
 
         <div class="main-content">
-            <div class="signup-box">
+            <div class="register-box">
                 <h1>Register</h1>
                 <form method="post" action="/register">
                     <div class="form-group">
