@@ -4,9 +4,83 @@
 <head>
     <meta charset="UTF-8">
     <title>Logged Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .top-bar {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .user-profile {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .user-profile .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            right: 0;
+            top: 60px;
+        }
+
+        .user-profile:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            color: #333;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
 </head>
 
 <body>
+    <div class="top-bar">
+        <div class="logo">
+            <img src="logo.png" alt="Logo">
+            <h2>Weather Node Initiative</h2>
+        </div>
+        <div class="user-profile">
+            <div>{{ first_name }}</div>
+            <div>Role</div>
+            <div class="dropdown-content">
+                <a href="#"><img src="profile_picture.png" alt="Profile Picture"
+                        style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px;">{{ first_name }}</a>
+                <a href="#">VIEW YOUR PROFILE</a>
+            </div>
+        </div>
+    </div>
     <h1>Welcome {{ first_name }}!</h1>
     <form action="{{ url_for('logout') }}" method="post">
         <button type="submit">Logout</button>
