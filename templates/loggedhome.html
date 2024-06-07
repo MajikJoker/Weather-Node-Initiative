@@ -97,7 +97,6 @@
 
         .profile-name {
             margin-right: 5px;
-            /* Add some right margin */
             font-weight: bold;
         }
 
@@ -112,7 +111,7 @@
 <body>
     <div class="top-bar">
         <div class="logo">
-            <img src="sitepic/logo.png">
+            <img src="{{ url_for('static', filename='/sitepic/logo.png') }}" alt="Logo">
             <h2>Weather Node Initiative</h2>
         </div>
         <div class="user-profile">
