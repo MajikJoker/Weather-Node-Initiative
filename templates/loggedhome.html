@@ -120,11 +120,11 @@
                 <div>Role</div>
             </div>
             <div class="top-bar-profile-picture" onclick="toggleDropdown()">
-                <img src="profile_picture.png">
+                <img src="{{ url_for('static', filename='/userpic/Bhone.png') }}">
             </div>
             <div class="dropdown-content rounded" id="dropdown">
                 <div class="dropdown-item">
-                    <img src="profile_picture.png" class="drop-down-profile-picture">
+                    <img src="{{ url_for('static', filename='/userpic/Bhone.png') }}" class="drop-down-profile-picture">
                     <div>
                         <div class="profile-name">{{ first_name }}</div>
                         <div><a href="#" class="view-profile">VIEW YOUR PROFILE</a></div>
