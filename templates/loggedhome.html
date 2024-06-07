@@ -34,18 +34,25 @@
 
         .user-profile {
             position: relative;
-            cursor: pointer;
+            display: flex;
+            align-items: center;
         }
 
-        .user-profile .dropdown-content {
+        .dropdown-content {
             display: none;
             position: absolute;
             background-color: #f9f9f9;
-            min-width: 160px;
+            min-width: 400px;
             box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
             z-index: 1;
             right: 0;
-            top: 60px;
+            top: 100%;
+            border-radius: 5px;
+            padding: 10px;
+        }
+
+        .dropdown-content.rounded {
+            border-radius: 10px;
         }
 
         .user-profile:hover .dropdown-content {
@@ -53,14 +60,51 @@
         }
 
         .dropdown-item {
-            padding: 12px 16px;
             text-decoration: none;
-            display: block;
+            display: flex;
+            flex-direction: row;
+            /* Set to row layout */
+            align-items: center;
             color: #333;
+            margin-bottom: 10px;
+        }
+
+        .dropdown-item:last-child {
+            margin-bottom: 0;
         }
 
         .dropdown-item:hover {
             background-color: #f1f1f1;
+        }
+
+        .top-bar-profile-picture {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .drop-down-profile-picture {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .user-info {
+            margin-right: 10px;
+        }
+
+        .profile-name {
+            margin-right: 5px;
+            /* Add some right margin */
+            font-weight: bold;
+        }
+
+        .view-profile {
+            color: #007BFF;
+            text-decoration: none;
+            font-size: smaller;
         }
     </style>
 </head>
@@ -68,16 +112,25 @@
 <body>
     <div class="top-bar">
         <div class="logo">
-            <img src="logo.png" alt="Logo">
+            <img src="logo.png">
             <h2>Weather Node Initiative</h2>
         </div>
         <div class="user-profile">
-            <div>{{ first_name }}</div>
-            <div>Role</div>
-            <div class="dropdown-content">
-                <a href="#"><img src="profile_picture.png" alt="Profile Picture"
-                        style="width: 30px; height: 30px; border-radius: 50%; margin-right: 10px;">{{ first_name }}</a>
-                <a href="#">VIEW YOUR PROFILE</a>
+            <div class="user-info">
+                <div class="profile-name">{{ first_name }}</div>
+                <div>Role</div>
+            </div>
+            <div class="top-bar-profile-picture" onclick="toggleDropdown()">
+                <img src="profile_picture.png">
+            </div>
+            <div class="dropdown-content rounded" id="dropdown">
+                <div class="dropdown-item">
+                    <img src="profile_picture.png" class="drop-down-profile-picture">
+                    <div>
+                        <div class="profile-name">{{ first_name }}</div>
+                        <div><a href="#" class="view-profile">VIEW YOUR PROFILE</a></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -85,6 +138,13 @@
     <form action="{{ url_for('logout') }}" method="post">
         <button type="submit">Logout</button>
     </form>
+
+    <script>
+        function toggleDropdown() {
+            var dropdown = document.getElementById("dropdown");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        }
+    </script>
 </body>
 
 </html>
