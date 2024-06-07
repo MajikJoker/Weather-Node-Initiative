@@ -20,7 +20,8 @@
 
         .container {
             width: 100%;
-            max-width: 1200px;
+            max-width: 600px;
+            /* Adjusted max-width */
             margin: 0 auto;
         }
 
@@ -97,9 +98,9 @@
 
         .form-group .show-password {
             position: absolute;
-            top: 50%;
+            top: calc(50% - 15px);
+            /* Adjusted position */
             right: 10px;
-            transform: translateY(-50%);
             cursor: pointer;
         }
 
@@ -114,6 +115,13 @@
 
         .terms input {
             margin-right: 10px;
+            vertical-align: middle;
+            /* Adjusted alignment */
+        }
+
+        .terms label {
+            vertical-align: middle;
+            /* Adjusted alignment */
         }
 
         .submit-btn {
