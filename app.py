@@ -71,7 +71,11 @@ def register():
 
 @app.route('/loggedhome')
 def loggedhome():
-    return render_template('loggedhome.html')
+    if 'user' in session:
+        username = session['user']
+        return render_template('loggedhome.html', username=username)
+    else:
+        return redirect(url_for('login'))
 
 @app.route('/logout', methods=['POST'])
 def logout():
