@@ -175,10 +175,13 @@
     </form>
 
     <div class="dashboard">
-        <div class="card">
+        <div class="card" id="weather-card">
             <div class="card-header">
                 <span class="heart">♡</span>
                 <span class="number">1</span>
+            </div>
+            <div class="weather-info">
+                <p>Loading weather data...</p>
             </div>
         </div>
         <div class="card">
@@ -214,10 +217,65 @@
     </div>
 
     <script>
+        const apiKey = "827db554784d6d5cd704af90e92577b4";
+        const weatherCard = document.getElementById("weather-card").querySelector(".weather-info");
+
         function toggleDropdown() {
             var dropdown = document.getElementById("dropdown");
             dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
         }
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            } else {
+                weatherCard.innerHTML = "Geolocation is not supported by this browser.";
+            }
+        }
+
+        function showPosition(position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            fetchWeatherData(latitude, longitude);
+        }
+
+        function showError(error) {
+            switch (error.code) {
+                case error.PERMISSION_DENIED:
+                    weatherCard.innerHTML = "User denied the request for Geolocation."
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    weatherCard.innerHTML = "Location information is unavailable."
+                    break;
+                case error.TIMEOUT:
+                    weatherCard.innerHTML = "The request to get user location timed out."
+                    break;
+                case error.UNKNOWN_ERROR:
+                    weatherCard.innerHTML = "An unknown error occurred."
+                    break;
+            }
+        }
+
+        function fetchWeatherData(latitude, longitude) {
+            const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    weatherCard.innerHTML = `
+                        <p>Temperature: ${data.main.temp} °C</p>
+                        <p>Weather: ${data.weather[0].description}</p>
+                        <p>Location: ${data.name}</p>
+                    `;
+                })
+                .catch(error => {
+                    weatherCard.innerHTML = "Error fetching weather data.";
+                    console.error("Error fetching weather data:", error);
+                });
+        }
+
+        // Call getLocation when the page loads
+        window.onload = getLocation;
     </script>
 </body>
 
