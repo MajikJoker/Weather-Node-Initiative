@@ -12,30 +12,53 @@
         <div class="logo">
             <img src="{{ url_for('static', filename='/sitepic/logo.png') }}" alt="Logo">
             <h2>Weather Node Initiative</h2>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Features</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
         </div>
-        <div class="user-profile">
-            <div class="user-info">
-                <div class="profile-name">{{ first_name }}</div>
-                <div>Role</div>
-            </div>
-            <div class="top-bar-profile-picture" onclick="toggleDropdown()">
-                <img src="{{ url_for('static', filename='/userpic/Bhone.png') }}" class="top-bar-profile-picture">
-            </div>
-            <div class="dropdown-content rounded" id="dropdown">
-                <div class="dropdown-item">
-                    <img src="{{ url_for('static', filename='/userpic/Bhone.png') }}" class="drop-down-profile-picture">
-                    <div>
-                        <div class="profile-name">{{ first_name }}</div>
-                        <div><a href="#" class="view-profile">VIEW YOUR PROFILE</a></div>
-                    </div>
+        <img src="{{ url_for('static', filename='/userpic/Bhone.png') }}" class="user-pic" onclick="toggleMenu()">
+
+        <div class="sub-menu-wrap" id="subMenu">
+            <div class="sub-menu">
+                <div class="user-info">
+                    <img src="{{ url_for('static', filename='/userpic/Bhone.png') }}">
+                    <h3>{{ first_name }}</h3>
                 </div>
-                <div class="dropdown-item">
-                    <form action="{{ url_for('logout') }}" method="post">
-                        <button type="submit">Logout</button>
-                    </form>
-                </div>
+                <hr>
+                <a href="#" class="sub-menu-link">
+                    <img src="{{ url_for('static', filename='/sitepic/profile.png') }}">
+                    <p>Edit Profile</p>
+                    <span>></span>
+                </a>
+                <a href="#" class="sub-menu-link">
+                    <img src="{{ url_for('static', filename='/sitepic/setting.png') }}">
+                    <p>Settings & Privacy</p>
+                    <span>></span>
+                </a>
+                <a href="#" class="sub-menu-link">
+                    <img src="{{ url_for('static', filename='/sitepic/help.png') }}">
+                    <p>Help & Support</p>
+                    <span>></span>
+                </a>
+                <a href="#" class="sub-menu-link">
+                    <img src="{{ url_for('static', filename='/sitepic/logout.png') }}">
+                    <p>Logout</p>
+                    <span>></span>
+                </a>
             </div>
         </div>
+
+
+        <form action="{{ url_for('logout') }}" method="post">
+            <button type="submit">Logout</button>
+        </form>
+
+
+
+
     </div>
     <h1>Welcome {{ first_name }}!</h1>
 
@@ -84,13 +107,14 @@
     </div>
 
     <script>
+        let subMenu = document.getElementById("subMenu");
+
+        function toggleMenu() {
+            subMenu.classList.toggle("open-menu");
+        }
+
         const apiKey = "827db554784d6d5cd704af90e92577b4";
         const weatherCard = document.getElementById("weather-card").querySelector(".weather-info");
-
-        function toggleDropdown() {
-            var dropdown = document.getElementById("dropdown");
-            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
-        }
 
         function getLocation() {
             if (navigator.geolocation) {
