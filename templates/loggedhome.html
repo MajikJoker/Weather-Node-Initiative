@@ -42,20 +42,15 @@
                         <p>Help & Support</p>
                         <span>></span>
                     </a>
-                    <a href="#" class="sub-menu-link">
+                    <a href="#" class="sub-menu-link" onclick="submitLogoutForm(event)">
                         <img src="{{ url_for('static', filename='/sitepic/logout.png') }}">
-                        <form action="{{ url_for('logout') }}" method="post">
-                            <p type="submit">Logout</p>
-                        </form>
+                        <p>Logout</p>
                         <span>></span>
                     </a>
                 </div>
             </div>
         </nav>
         <h1>Welcome {{ first_name }}!</h1>
-        <form action="{{ url_for('logout') }}" method="post">
-            <button type="submit">Logout</button>
-        </form>
 
         <div class="main-content">
             <div class="dashboard">
@@ -109,6 +104,28 @@
 
         function toggleMenu() {
             subMenu.classList.toggle("open-menu");
+        }
+
+        function submitLogoutForm(event) {
+            event.preventDefault();
+
+            fetch("{{ url_for('logout') }}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": "{{ csrf_token() }}" // Add this if you are using CSRF protection
+                }
+            })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.href = "{{ url_for('home') }}";
+                    } else {
+                        console.error("Logout failed.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                });
         }
 
         const apiKey = "827db554784d6d5cd704af90e92577b4";
