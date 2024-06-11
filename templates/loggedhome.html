@@ -52,17 +52,10 @@
             </a>
         </div>
     </div>
-
-
+    <h1>Welcome {{ first_name }}!</h1>
     <form action="{{ url_for('logout') }}" method="post">
         <button type="submit">Logout</button>
     </form>
-
-
-
-
-    </div>
-    <h1>Welcome {{ first_name }}!</h1>
 
     <div class="main-content">
         <div class="dashboard">
