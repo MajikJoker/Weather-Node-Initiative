@@ -9,6 +9,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            background-color: #f5f5f5;
         }
 
         .top-bar {
@@ -103,6 +104,43 @@
             text-decoration: none;
             font-size: smaller;
         }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            width: 80%;
+            max-width: 1200px;
+            margin: 20px auto;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 150px;
+            position: relative;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .heart {
+            font-size: 24px;
+            color: #333;
+        }
+
+        .number {
+            font-size: 18px;
+            color: #333;
+        }
     </style>
 </head>
 
@@ -135,6 +173,45 @@
     <form action="{{ url_for('logout') }}" method="post">
         <button type="submit">Logout</button>
     </form>
+
+    <div class="dashboard">
+        <div class="card">
+            <div class="card-header">
+                <span class="heart">♡</span>
+                <span class="number">1</span>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <span class="heart">♡</span>
+                <span class="number">2</span>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <span class="heart">♡</span>
+                <span class="number">3</span>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <span class="heart">♡</span>
+                <span class="number">4</span>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <span class="heart">♡</span>
+                <span class="number">5</span>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <span class="heart">♡</span>
+                <span class="number">6</span>
+            </div>
+        </div>
+    </div>
 
     <script>
         function toggleDropdown() {
