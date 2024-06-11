@@ -109,7 +109,7 @@
         function submitLogoutForm(event) {
             event.preventDefault();
 
-            fetch("{{ url_for('logout') }}", {
+            fetch("{{ url_for('home') }}", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
