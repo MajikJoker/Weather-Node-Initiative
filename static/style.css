@@ -24,6 +24,17 @@ nav {
     position: relative;
 }
 
+.logo {
+    width: 120px;
+}
+
+.user-pic {
+    width: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    margin-left: 30px;
+}
+
 nav ul {
     width: 100%;
     text-align: right;
@@ -38,20 +49,6 @@ nav ul li {
 nav ul li a {
     color: #fff;
     text-decoration: none;
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    width: 70px;
-    height: 70px;
-}
-
-.logo img {
-    border-radius: 50%;
-    width: 70px;
-    height: 70px;
-    margin-right: 10px;
 }
 
 /* User Profile Dropdown Styles */
