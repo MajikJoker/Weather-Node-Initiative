@@ -9,8 +9,8 @@
 
 <body>
     <div class="top-bar">
-        <div class="logo">
-            <img src="{{ url_for('static', filename='/sitepic/logo.png') }}" alt="Logo">
+        <nav>
+            <img src="{{ url_for('static', filename='/sitepic/logo.png') }}" class="logo">
             <h2>Weather Node Initiative</h2>
             <ul>
                 <li><a href="#">Home</a></li>
@@ -18,43 +18,45 @@
                 <li><a href="#">About</a></li>
                 <li><a href="#">Contact</a></li>
             </ul>
-        </div>
-        <img src="{{ url_for('static', filename='/userpic/user.png') }}" class="user-pic" onclick="toggleMenu()">
+            <img src="{{ url_for('static', filename='/userpic/user.png') }}" class="user-pic" onclick="toggleMenu()">
+        </nav>
+    </div>
 
-        <div class="sub-menu-wrap" id="subMenu">
-            <div class="sub-menu">
-                <div class="user-info">
-                    <img src="{{ url_for('static', filename='/userpic/user.png') }}">
-                    <h3>{{ first_name }}</h3>
-                </div>
-                <hr>
-                <a href="#" class="sub-menu-link">
-                    <img src="{{ url_for('static', filename='/sitepic/profile.png') }}">
-                    <p>Edit Profile</p>
-                    <span>></span>
-                </a>
-                <a href="#" class="sub-menu-link">
-                    <img src="{{ url_for('static', filename='/sitepic/setting.png') }}">
-                    <p>Settings & Privacy</p>
-                    <span>></span>
-                </a>
-                <a href="#" class="sub-menu-link">
-                    <img src="{{ url_for('static', filename='/sitepic/help.png') }}">
-                    <p>Help & Support</p>
-                    <span>></span>
-                </a>
-                <a href="#" class="sub-menu-link">
-                    <img src="{{ url_for('static', filename='/sitepic/logout.png') }}">
-                    <p>Logout</p>
-                    <span>></span>
-                </a>
+
+    <div class="sub-menu-wrap" id="subMenu">
+        <div class="sub-menu">
+            <div class="user-info">
+                <img src="{{ url_for('static', filename='/userpic/user.png') }}">
+                <h3>{{ first_name }}</h3>
             </div>
+            <hr>
+            <a href="#" class="sub-menu-link">
+                <img src="{{ url_for('static', filename='/sitepic/profile.png') }}">
+                <p>Edit Profile</p>
+                <span>></span>
+            </a>
+            <a href="#" class="sub-menu-link">
+                <img src="{{ url_for('static', filename='/sitepic/setting.png') }}">
+                <p>Settings & Privacy</p>
+                <span>></span>
+            </a>
+            <a href="#" class="sub-menu-link">
+                <img src="{{ url_for('static', filename='/sitepic/help.png') }}">
+                <p>Help & Support</p>
+                <span>></span>
+            </a>
+            <a href="#" class="sub-menu-link">
+                <img src="{{ url_for('static', filename='/sitepic/logout.png') }}">
+                <p>Logout</p>
+                <span>></span>
+            </a>
         </div>
+    </div>
 
 
-        <form action="{{ url_for('logout') }}" method="post">
-            <button type="submit">Logout</button>
-        </form>
+    <form action="{{ url_for('logout') }}" method="post">
+        <button type="submit">Logout</button>
+    </form>
 
 
 
