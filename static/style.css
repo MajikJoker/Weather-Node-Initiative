@@ -9,12 +9,6 @@
 }
 
 /* Top Bar Styles */
-.top-bar {
-    width: 100%;
-    min-height: 100vh;
-    background: #eceaff;
-    color: #525252;
-}
 
 nav {
     background: #1a1a1a;
