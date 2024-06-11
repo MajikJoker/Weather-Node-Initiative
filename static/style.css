@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap');
+
 /* General Styles */
 * {
     font-family: 'Poppins', sans-serif;
@@ -26,6 +28,7 @@ nav {
 
 .logo {
     width: 120px;
+    height: 40px;
 }
 
 .user-pic {
@@ -175,7 +178,6 @@ nav ul li a {
 }
 
 /* Login and Register Styles */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap');
 
 .container {
     width: 100%;

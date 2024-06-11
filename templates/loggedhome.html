@@ -18,6 +18,7 @@
                 <li><a href="#">Contact</a></li>
             </ul>
             <img src="{{ url_for('static', filename='/userpic/user.png') }}" class="user-pic" onclick="toggleMenu()">
+
             <div class="sub-menu-wrap" id="subMenu">
                 <div class="sub-menu">
                     <div class="user-info">
@@ -25,6 +26,7 @@
                         <h3>{{ first_name }}</h3>
                     </div>
                     <hr>
+
                     <a href="#" class="sub-menu-link">
                         <img src="{{ url_for('static', filename='/sitepic/profile.png') }}">
                         <p>Edit Profile</p>
