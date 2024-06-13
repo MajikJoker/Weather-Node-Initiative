@@ -204,6 +204,8 @@ nav ul li a {
 .logoName {
     display: flex;
     align-items: center;
+    text-decoration: none;
+    color: inherit;
 }
 
 .logoName img {
