@@ -69,7 +69,7 @@
                     <p id="weather-description"></p>
                 </div>
             </div>
-            <div class="weather-daily">
+            <div class="weather-daily" id="weatherDaily">
                 <!-- This section will be populated dynamically with JavaScript -->
             </div>
         </div>
@@ -159,29 +159,60 @@
                 .then(data => {
                     console.log("Weather Forecast API Response:", data); // Log the API response for debugging
 
-                    const dailyForecasts = data.list.filter(item => {
-                        // Adjust filtering condition based on API response structure
-                        return true; // Example condition
+                    // Get today's date
+                    const today = new Date();
+                    const todayDateString = today.toISOString().split('T')[0];
+
+                    // Group forecasts by date
+                    const forecastByDay = {};
+                    data.list.forEach(item => {
+                        const forecastDate = new Date(item.dt * 1000);
+                        const dateKey = forecastDate.toISOString().split('T')[0]; // Get date in YYYY-MM-DD format
+                        if (!forecastByDay[dateKey]) {
+                            forecastByDay[dateKey] = [];
+                        }
+                        forecastByDay[dateKey].push(item);
                     });
+
+                    // Select one forecast per day (e.g., the closest to noon)
+                    const dailyForecasts = [];
+                    for (const dateKey in forecastByDay) {
+                        if (dateKey > todayDateString) { // Ensure forecast starts from tomorrow
+                            const forecasts = forecastByDay[dateKey];
+                            const closestToNoon = forecasts.reduce((prev, curr) => {
+                                const prevHour = new Date(prev.dt * 1000).getHours();
+                                const currHour = new Date(curr.dt * 1000).getHours();
+                                return Math.abs(currHour - 12) < Math.abs(prevHour - 12) ? curr : prev;
+                            });
+                            dailyForecasts.push(closestToNoon);
+                        }
+                    }
+
+                    // Log the available forecast range for debugging
+                    console.log("Available forecast dates:", dailyForecasts.map(forecast => new Date(forecast.dt * 1000).toISOString().split('T')[0]));
+
+                    // Limit to the next 7 days if available
+                    const next7DaysForecasts = dailyForecasts.slice(0, 7);
 
                     // Clear any existing forecast items
                     weatherDaily.innerHTML = '';
 
                     // Loop through daily forecasts and create HTML elements
-                    dailyForecasts.forEach(forecast => {
+                    next7DaysForecasts.forEach(forecast => {
                         // Create elements
                         const forecastDate = new Date(forecast.dt * 1000);
-                        const dayOfWeek = forecastDate.toLocaleDateString('en-US', { weekday: 'short' });
+                        const dayOfWeek = forecastDate.toLocaleDateString('en-US', { weekday: 'short', day: 'numeric', month: 'short' });
                         const weatherIcon = `https://openweathermap.org/img/wn/${forecast.weather[0].icon}.png`;
-                        const tempMin = forecast.main.temp_min;
-                        const tempMax = forecast.main.temp_max;
+                        const temperature = forecast.main.temp;
+                        const feelsLike = forecast.main.feels_like;
 
                         const forecastItem = document.createElement('div');
                         forecastItem.classList.add('weather-daily-item');
                         forecastItem.innerHTML = `
                     <p>${dayOfWeek}</p>
                     <img src="${weatherIcon}" alt="${forecast.weather[0].description}">
-                    <p>${tempMax} °C / ${tempMin} °C</p>
+                    <p>Temp: ${temperature} °C</p>
+                    <p>Feels like: ${feelsLike} °C</p>
                 `;
 
                         // Append forecast item to weatherDaily container
@@ -193,12 +224,10 @@
                 });
         }
 
-
         // Call getLocation when the page loads
         window.onload = function () {
             getLocation();
         };
-
     </script>
 </body>
 

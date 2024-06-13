@@ -290,17 +290,17 @@ nav ul li a {
 /* Add these styles at the end of your existing style.css file */
 
 .weather-forecast {
-    background-color: #f0f0f0;
-    padding: 20px;
+    width: 100%;
+    max-width: 800px;
     margin: 20px 0;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
 }
 
 .weather-current {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
 }
 
 .location-date {
@@ -321,21 +321,19 @@ nav ul li a {
 }
 
 .weather-daily {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 10px;
-    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
 }
 
 .weather-daily-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+    background-color: #f0f0f0;
     padding: 10px;
-    border-radius: 5px;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    width: calc(100% / 7 - 10px); /* Adjust width and margin for 7 items */
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    text-align: center;
 }
 
 .weather-daily-item img {
