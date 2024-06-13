@@ -201,15 +201,21 @@ nav ul li a {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.logo span {
+.logoName {
+    display: flex;
+    align-items: center;
+}
+
+.logoName img {
+    width: 120px;
+    height: auto;
+    margin-right: 10px;
+}
+
+.logoName span {
     font-family: 'Roboto', sans-serif;
     font-size: 24px;
     font-weight: bold;
-}
-
-.logo a {
-    text-decoration: none;
-    color: inherit;
 }
 
 .register-btn,
