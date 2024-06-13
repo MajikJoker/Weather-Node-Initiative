@@ -163,6 +163,8 @@
             fetch(url)
                 .then(response => response.json())
                 .then(data => {
+                    console.log("Weather Forecast API Response:", data); // Log the API response for debugging
+
                     const dailyForecasts = data.list.filter(item => {
                         // Filter forecasts for each day at 12:00:00
                         const forecastDate = new Date(item.dt * 1000);
@@ -185,10 +187,10 @@
                         const forecastItem = document.createElement('div');
                         forecastItem.classList.add('weather-daily-item');
                         forecastItem.innerHTML = `
-                            <p>${dayOfWeek}</p>
-                            <img src="${weatherIcon}" alt="${forecast.weather[0].description}">
-                            <p>${tempMax} °C / ${tempMin} °C</p>
-                        `;
+                    <p>${dayOfWeek}</p>
+                    <img src="${weatherIcon}" alt="${forecast.weather[0].description}">
+                    <p>${tempMax} °C / ${tempMin} °C</p>
+                `;
 
                         // Append forecast item to weatherDaily container
                         weatherDaily.appendChild(forecastItem);
