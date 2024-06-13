@@ -97,6 +97,7 @@
         const apiKey = "827db554784d6d5cd704af90e92577b4";
         const weatherCurrent = document.querySelector(".weather-current");
         const weatherDaily = document.querySelector(".weather-daily");
+        let latitude, longitude; // Declare latitude and longitude globally
 
         function getLocation() {
             if (navigator.geolocation) {
@@ -107,8 +108,8 @@
         }
 
         function showPosition(position) {
-            const latitude = position.coords.latitude;
-            const longitude = position.coords.longitude;
+            latitude = position.coords.latitude;
+            longitude = position.coords.longitude;
             fetchWeatherData(latitude, longitude);
         }
 
@@ -146,6 +147,9 @@
                     document.getElementById("temperature").textContent = `Temperature: ${temperature} °C`;
                     document.getElementById("weather-description").textContent = `Weather: ${weatherDescription}`;
                     document.getElementById("weather-icon").setAttribute("src", weatherIcon);
+
+                    // Once weather data is fetched, also fetch and display daily forecast
+                    getWeatherForecast();
                 })
                 .catch(error => {
                     weatherCurrent.innerHTML = "Error fetching weather data.";
@@ -153,21 +157,7 @@
                 });
         }
 
-        // Call getLocation when the page loads
-        window.onload = function () {
-            getLocation();
-            getWeatherForecast(); // Function to fetch and display daily forecast
-        };
-
         function getWeatherForecast() {
-            const apiKey = "827db554784d6d5cd704af90e92577b4";
-            const weatherDaily = document.getElementById("weather-daily");
-
-            // Get current date
-            const today = new Date();
-            let date = today.getDate();
-
-            // Fetch forecast data for the next 7 days
             const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`;
 
             fetch(url)
@@ -195,10 +185,10 @@
                         const forecastItem = document.createElement('div');
                         forecastItem.classList.add('weather-daily-item');
                         forecastItem.innerHTML = `
-                    <p>${dayOfWeek}</p>
-                    <img src="${weatherIcon}" alt="${forecast.weather[0].description}">
-                    <p>${tempMax} °C / ${tempMin} °C</p>
-                `;
+                            <p>${dayOfWeek}</p>
+                            <img src="${weatherIcon}" alt="${forecast.weather[0].description}">
+                            <p>${tempMax} °C / ${tempMin} °C</p>
+                        `;
 
                         // Append forecast item to weatherDaily container
                         weatherDaily.appendChild(forecastItem);
@@ -208,6 +198,11 @@
                     console.error("Error fetching weather forecast:", error);
                 });
         }
+
+        // Call getLocation when the page loads
+        window.onload = function () {
+            getLocation();
+        };
 
     </script>
 </body>
