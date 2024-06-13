@@ -292,12 +292,12 @@ nav ul li a {
 .weather-forecast {
     width: 100%;
     max-width: 800px;
-    margin: 20px 0;
+    margin: 20px auto;
     text-align: center;
 }
 
 .weather-current {
-    background-color: #f0f0f0;
+    background-color: #bab7b7;
     padding: 20px;
     border-radius: 10px;
     margin-bottom: 20px;
@@ -327,8 +327,8 @@ nav ul li a {
 }
 
 .weather-daily-item {
-    background-color: #f0f0f0;
-    padding: 10px;
+    background-color: #bab7b7;
+    padding: 5px;
     border-radius: 10px;
     width: calc(100% / 7 - 10px); /* Adjust width and margin for 7 items */
     box-sizing: border-box;
