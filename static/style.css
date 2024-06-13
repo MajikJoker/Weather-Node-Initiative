@@ -192,6 +192,8 @@ nav ul li a {
     width: 100%;
     max-width: 460px;
     box-sizing: border-box;
+    margin: 0 auto; /* Center the box horizontally */
+    margin-top: 20px; /* Optional: Add top margin as needed */
 }
 
 .login-box h1,
