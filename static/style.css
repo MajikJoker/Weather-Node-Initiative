@@ -322,17 +322,18 @@ nav ul li a {
 
 .weather-daily {
     display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    justify-content: space-around; /* Adjust spacing between items */
+    flex-wrap: nowrap; /* Prevent items from wrapping onto a new line */
+    margin-top: 20px; /* Optional: Adjust top margin as needed */
 }
 
 .weather-daily-item {
     background-color: #bab7b7;
     padding: 10px;
     border-radius: 10px;
-    width: calc(100% / 4 - 20px); /* Adjust width and margin for 4 items per row */
+    width: calc(100% / 5 - 20px); /* Adjust width for 5 items per row */
     box-sizing: border-box;
-    margin-bottom: 20px;
+    margin-bottom: 20px; /* Adjust bottom margin as needed */
     text-align: center;
 }
 
