@@ -198,22 +198,21 @@
 
                     // Loop through daily forecasts and create HTML elements
                     next7DaysForecasts.forEach(forecast => {
-                        // Create elements
                         const forecastDate = new Date(forecast.dt * 1000);
                         const dayOfWeek = forecastDate.toLocaleDateString('en-US', { weekday: 'short', day: 'numeric', month: 'short' });
                         const weatherIcon = `https://openweathermap.org/img/wn/${forecast.weather[0].icon}.png`;
-                        const temperature = forecast.main.temp;
-                        const feelsLike = forecast.main.feels_like;
+                        const temperature = `${forecast.main.temp.toFixed(2)}°C`; // Concatenate °C directly
+
+                        const feelsLike = `${forecast.main.feels_like.toFixed(2)}°C`; // Concatenate °C directly
 
                         const forecastItem = document.createElement('div');
                         forecastItem.classList.add('weather-daily-item');
                         forecastItem.innerHTML = `
                     <p>${dayOfWeek}</p>
                     <img src="${weatherIcon}" alt="${forecast.weather[0].description}">
-                    <p>Temp: ${temperature} °C</p>
-                    <p>Feels like: ${feelsLike} °C</p>
+                    <p>Temp: ${temperature}</p>
+                    <p>Feels like: ${feelsLike}</p>
                 `;
-
                         // Append forecast item to weatherDaily container
                         weatherDaily.appendChild(forecastItem);
                     });
