@@ -166,10 +166,8 @@
                     console.log("Weather Forecast API Response:", data); // Log the API response for debugging
 
                     const dailyForecasts = data.list.filter(item => {
-                        // Filter forecasts for each day at 12:00:00
-                        const forecastDate = new Date(item.dt * 1000);
-                        const forecastTime = forecastDate.getHours();
-                        return forecastTime === 12; // Adjust this condition based on API response
+                        // Adjust filtering condition based on API response structure
+                        return true; // Example condition
                     });
 
                     // Clear any existing forecast items
@@ -200,6 +198,7 @@
                     console.error("Error fetching weather forecast:", error);
                 });
         }
+
 
         // Call getLocation when the page loads
         window.onload = function () {
