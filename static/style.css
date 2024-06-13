@@ -137,53 +137,6 @@ nav ul li a {
     font-weight: 600;
 }
 
-/* Dashboard Styles */
-.main-content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-top: 60px; /* Make space for the fixed top bar */
-    height: calc(100vh - 60px); /* Adjust height to fit within the viewport */
-    z-index: 1;
-}
-
-.dashboard {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    width: 80%;
-    max-width: 1200px;
-    margin: 20px auto;
-}
-
-.card {
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 150px;
-    position: relative;
-}
-
-.card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.heart {
-    font-size: 24px;
-    color: #333;
-}
-
-.number {
-    font-size: 18px;
-    color: #333;
-}
-
 /* Login and Register Styles */
 
 .container {
