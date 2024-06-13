@@ -42,7 +42,9 @@
                         <p>Help & Support</p>
                         <span>></span>
                     </a>
-                    <a href="#" class="sub-menu-link">
+                    <!-- Wrap the logout link in a form -->
+                    <form id="logoutForm" action="{{ url_for('logout') }}" method="POST" style="display: none;"></form>
+                    <a href="#" class="sub-menu-link" id="logoutLink">
                         <img src="{{ url_for('static', filename='/sitepic/logout.png') }}">
                         <p>Logout</p>
                         <span>></span>
@@ -51,9 +53,6 @@
             </div>
         </nav>
         <h1>Welcome {{ first_name }}!</h1>
-        <form action="{{ url_for('logout') }}" method="post">
-            <button type="submit">Logout</button>
-        </form>
 
         <div class="main-content">
             <div class="dashboard">
@@ -100,14 +99,18 @@
         </div>
     </div>
 
-
-
     <script>
         let subMenu = document.getElementById("subMenu");
 
         function toggleMenu() {
             subMenu.classList.toggle("open-menu");
         }
+
+        // Add an event listener to the logout link
+        document.getElementById("logoutLink").addEventListener("click", function (event) {
+            event.preventDefault(); // Prevent the default anchor behavior
+            document.getElementById("logoutForm").submit(); // Submit the form
+        });
 
         const apiKey = "827db554784d6d5cd704af90e92577b4";
         const weatherCard = document.getElementById("weather-card").querySelector(".weather-info");
