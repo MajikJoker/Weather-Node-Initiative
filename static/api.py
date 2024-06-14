@@ -1,5 +1,28 @@
 import requests
 
+######################tomorrow io#################################################
+print("######################tomorrow io #################################################")
+# Replace {API_KEY} with your actual tomorrow IO API key
+TI_api_key = "2zHJgz9VA4EZOIXpSnJGf2L8WKRssepF"
+
+
+# Define the API endpoint URL with placeholders
+url = f"https://api.tomorrow.io/v4/weather/forecast?location=42.3478,-71.0466&apikey=2zHJgz9VA4EZOIXpSnJGf2L8WKRssepF"
+print(url)
+
+# Send a GET request to the API endpoint
+response = requests.get(url)
+
+# Check for successful response (status code 200)
+if response.status_code == 200:
+  # Convert the JSON response to a Python dictionary
+  data = response.json()
+  print(data)
+else:
+  print(f"Error: API request failed with status code {response.status_code}")
+  print(response.text)
+
+
 ######################visual crossing #################################################
 print("######################visual crossing #################################################")
 # Replace {API_KEY} with your actual visual cross API key
