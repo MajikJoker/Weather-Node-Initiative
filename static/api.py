@@ -53,8 +53,8 @@ else:
 api_key = "827db554784d6d5cd704af90e92577b4"
 
 # Define latitude and longitude as variables
-latitude = 35  # Replace with your desired latitude
-longitude = 139  # Replace with your desired longitude
+latitude = 1.34180000  # Replace with your desired latitude
+longitude = 103.83390000  # Replace with your desired longitude
 
 # Define the API endpoint URL with placeholders
 url = f"https://api.openweathermap.org/data/2.5/weather?lat={latitude}&lon={longitude}&appid={api_key}"
