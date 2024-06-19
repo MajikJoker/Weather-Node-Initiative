@@ -91,13 +91,13 @@ def login():
 
 @app.route('/verify_2fa', methods=['GET', 'POST'])
 def verify_2fa():
-    if 'temp_user' not in session:
+    if 'temp_user' not in session or '2fa_code' not in session:
         return redirect(url_for('login'))
 
     if request.method == 'POST':
         entered_code = request.form.get('2fa_code')
 
-        if entered_code == session.get('2fa_code'):
+        if entered_code == session['2fa_code']:
             # Move the user from temp_user to logged in user
             session['user'] = session.pop('temp_user')
             session.pop('2fa_code', None)
