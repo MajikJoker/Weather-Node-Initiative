@@ -75,7 +75,7 @@ def login():
                 mail.send(msg)
             except Exception as e:
                 flash(f"Failed to send email: {str(e)}")
-                return redirect(url_for('login'))
+                return redirect(url_for('home'))
 
             # Save the 2FA code in the session
             session['2fa_code'] = str(two_fa_code)
