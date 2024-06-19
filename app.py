@@ -54,7 +54,14 @@ def login():
 
         if user and check_password_hash(user['password'], password):
             session['user'] = email
-            return redirect(url_for('loggedhome'))
+
+            # Redirect based on user role
+            if user.get('role') == 'sysadmin':
+                return redirect(url_for('sysadmin_dashboard'))
+            elif user.get('role') == 'secadmin':
+                return redirect(url_for('secadmin_dashboard'))
+            else:
+                return redirect(url_for('loggedhome'))
         else:
             flash("Invalid email or password")
             return redirect(url_for('login'))
@@ -67,6 +74,7 @@ def register():
         first_name = request.form.get('first_name')
         email = request.form.get('email')
         password = request.form.get('password')
+        role = 'free_user'  # Default role is 'free_user'
 
         if users.find_one({"email": email}):
             flash("Email already exists")
@@ -77,7 +85,7 @@ def register():
             "first_name": first_name,
             "email": email,
             "password": hashed_password,
-            "role": "free_user"  # Automatically assign the role of 'free_user'
+            "role": role  # Include role in user data
         }
 
         try:
@@ -97,22 +105,22 @@ def loggedhome():
         user = users.find_one({"email": email})
         if user:
             first_name = user.get('first_name', 'User')
-            return render_template('loggedhome.html', first_name=first_name)
+            return render_template('loggedhome.html', first_name=first_name, user=user)
         else:
             flash("User not found")
             return redirect(url_for('login'))
     else:
         return redirect(url_for('login'))
 
-@app.route('/admin')
-@role_required('admin')
-def admin_dashboard():
-    return "Welcome to the Admin Dashboard!"
+@app.route('/sysadmin_dashboard')
+@role_required('sysadmin')
+def sysadmin_dashboard():
+    return render_template('sysadmin.html')
 
-@app.route('/security')
-@role_required('security_admin')
-def security_dashboard():
-    return "Welcome to the Security Admin Dashboard!"
+@app.route('/secadmin_dashboard')
+@role_required('secadmin')
+def secadmin_dashboard():
+    return render_template('secadmin.html')
 
 @app.route('/logout', methods=['POST'])
 def logout():

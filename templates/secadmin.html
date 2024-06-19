@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Security Admin Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="{{ url_for('home') }}" class="logoName">
+                <img src="{{ url_for('static', filename='/sitepic/logo.png') }}" alt="Logo">
+                <span>Weather Node Initiative</span>
+            </a>
+            <form method="post" action="{{ url_for('logout') }}">
+                <button type="submit" class="logout-btn">LOGOUT</button>
+            </form>
+        </div>
+        <div class="main-content">
+            <h1>Welcome to the Security Admin Dashboard!</h1>
+            <p>Here you can manage security settings and monitor user activities.</p>
+        </div>
+    </div>
+</body>
+
+</html>
