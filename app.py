@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, flash, session, g
 from pymongo import MongoClient
 from werkzeug.security import generate_password_hash, check_password_hash
+from functools import wraps
 from dotenv import load_dotenv
 import os
 
@@ -20,6 +21,24 @@ app = Flask(__name__)
 
 # Secret key
 app.secret_key = os.environ.get('SECRET_KEY')
+
+def role_required(required_role):
+    def decorator(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            if 'user' not in session:
+                flash("You need to be logged in to access this page.")
+                return redirect(url_for('login'))
+
+            user = users.find_one({"email": session['user']})
+            if user is None or user.get('role') != required_role:
+                flash("You do not have the required permissions to access this page.")
+                return redirect(url_for('home'))
+
+            g.user = user  # Add user to global context
+            return f(*args, **kwargs)
+        return decorated_function
+    return decorator
 
 # Routes
 @app.route('/')
@@ -57,7 +76,8 @@ def register():
         user_data = {
             "first_name": first_name,
             "email": email,
-            "password": hashed_password
+            "password": hashed_password,
+            "role": "free_user"  # Automatically assign the role of 'free_user'
         }
 
         try:
@@ -83,6 +103,16 @@ def loggedhome():
             return redirect(url_for('login'))
     else:
         return redirect(url_for('login'))
+
+@app.route('/admin')
+@role_required('admin')
+def admin_dashboard():
+    return "Welcome to the Admin Dashboard!"
+
+@app.route('/security')
+@role_required('security_admin')
+def security_dashboard():
+    return "Welcome to the Security Admin Dashboard!"
 
 @app.route('/logout', methods=['POST'])
 def logout():
