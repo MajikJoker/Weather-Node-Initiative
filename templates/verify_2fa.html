@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Verify 2FA</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="main-content">
+            <div class="login-box">
+                <h1>Verify 2FA</h1>
+                <form method="post" action="{{ url_for('verify_2fa') }}">
+                    <div class="form-group">
+                        <label for="2fa_code">Enter the 4-digit code sent to your email</label>
+                        <input type="text" id="2fa_code" name="2fa_code" required>
+                    </div>
+                    <button type="submit" class="submit-btn">Verify</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

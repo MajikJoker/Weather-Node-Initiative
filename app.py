@@ -4,6 +4,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
 from dotenv import load_dotenv
 import os
+from flask_mail import Mail, Message
+import random
 
 # Load environment variables from .env file
 load_dotenv()
@@ -21,6 +23,16 @@ app = Flask(__name__)
 
 # Secret key
 app.secret_key = os.environ.get('SECRET_KEY')
+
+# Configure Flask-Mail
+app.config['MAIL_SERVER'] = os.environ.get('MAIL_SERVER')
+app.config['MAIL_PORT'] = int(os.environ.get('MAIL_PORT'))
+app.config['MAIL_USE_TLS'] = os.environ.get('MAIL_USE_TLS') == 'True'
+app.config['MAIL_USE_SSL'] = os.environ.get('MAIL_USE_SSL') == 'True'
+app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
+
+mail = Mail(app)
 
 def role_required(required_role):
     def decorator(f):
@@ -53,20 +65,57 @@ def login():
         user = users.find_one({"email": email})
 
         if user and check_password_hash(user['password'], password):
-            session['user'] = email
+            # Generate a random 4-digit code
+            two_fa_code = random.randint(1000, 9999)
+
+            # Send the 4-digit code to the user's email
+            try:
+                msg = Message('Your 2FA Code', sender=os.environ.get('MAIL_USERNAME'), recipients=[email])
+                msg.body = f'Your 2FA code is {two_fa_code}.'
+                mail.send(msg)
+            except Exception as e:
+                flash(f"Failed to send email: {str(e)}")
+                return redirect(url_for('login'))
+
+            # Save the 2FA code in the session
+            session['2fa_code'] = str(two_fa_code)
+            session['temp_user'] = email
+
+            return redirect(url_for('verify_2fa'))
+
+        else:
+            flash("Invalid email or password")
+            return redirect(url_for('login'))
+
+    return render_template('login.html')
+
+@app.route('/verify_2fa', methods=['GET', 'POST'])
+def verify_2fa():
+    if 'temp_user' not in session:
+        return redirect(url_for('login'))
+
+    if request.method == 'POST':
+        entered_code = request.form.get('2fa_code')
+
+        if entered_code == session.get('2fa_code'):
+            # Move the user from temp_user to logged in user
+            session['user'] = session.pop('temp_user')
+            session.pop('2fa_code', None)
 
             # Redirect based on user role
+            user = users.find_one({"email": session['user']})
             if user.get('role') == 'sysadmin':
                 return redirect(url_for('sysadmin_dashboard'))
             elif user.get('role') == 'secadmin':
                 return redirect(url_for('secadmin_dashboard'))
             else:
                 return redirect(url_for('loggedhome'))
-        else:
-            flash("Invalid email or password")
-            return redirect(url_for('login'))
 
-    return render_template('login.html')
+        else:
+            flash("Invalid 2FA code")
+            return redirect(url_for('verify_2fa'))
+
+    return render_template('verify_2fa.html')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
