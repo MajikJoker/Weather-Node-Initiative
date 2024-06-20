@@ -10,8 +10,6 @@ from flask import Flask, request, jsonify
 import random
 from flask_cors import CORS
 
-
-
 # Load environment variables from .env file
 load_dotenv()
 
@@ -31,7 +29,6 @@ cors = CORS()
 
 # Apply CORS to app
 cors.init_app(app, resources={r"/*": {"origins": "*"}})
-
 
 # Secret key
 app.secret_key = os.environ.get('SECRET_KEY')
@@ -101,8 +98,6 @@ def get_weather():
             "error": f"API request failed with status code {response.status_code}",
             "message": response.text
         }), response.status_code
-
-
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
