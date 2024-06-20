@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Logged Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <div class="top-bar">
+        <nav>
+            <img src="{{ url_for('static', filename='/sitepic/logo.png') }}" class="logo">
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Features</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+            <img src="{{ url_for('static', filename='/userpic/user.png') }}" class="user-pic" onclick="toggleMenu()">
+
+            <div class="sub-menu-wrap" id="subMenu">
+                <div class="sub-menu">
+                    <div class="user-info">
+                        <img src="{{ url_for('static', filename='/userpic/user.png') }}">
+                        <h3>{{ first_name }}</h3>
+                    </div>
+                    <hr>
+
+                    <a href="#" class="sub-menu-link">
+                        <img src="{{ url_for('static', filename='/sitepic/profile.png') }}">
+                        <p>Edit Profile</p>
+                        <span>></span>
+                    </a>
+                    <a href="#" class="sub-menu-link">
+                        <img src="{{ url_for('static', filename='/sitepic/setting.png') }}">
+                        <p>Settings & Privacy</p>
+                        <span>></span>
+                    </a>
+                    <a href="#" class="sub-menu-link">
+                        <img src="{{ url_for('static', filename='/sitepic/help.png') }}">
+                        <p>Help & Support</p>
+                        <span>></span>
+                    </a>
+                    <!-- Wrap the logout link in a form -->
+                    <form id="logoutForm" action="{{ url_for('logout') }}" method="POST" style="display: none;"></form>
+                    <a href="#" class="sub-menu-link" id="logoutLink">
+                        <img src="{{ url_for('static', filename='/sitepic/logout.png') }}">
+                        <p>Logout</p>
+                        <span>></span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Weather Forecast Display -->
+        <div class="weather-forecast">
+            <div class="weather-current">
+                <div class="location-date">
+                    <h2 id="location"></h2>
+                    <p id="date"></p>
+                </div>
+                <div class="weather-icon">
+                    <img id="weather-icon" src="" alt="Weather Icon">
+                </div>
+                <div class="weather-details">
+                    <p id="temperature"></p>
+                    <p id="weather-description"></p>
+                </div>
+            </div>
+            <div class="weather-daily" id="weatherDaily">
+                <!-- This section will be populated dynamically with JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let subMenu = document.getElementById("subMenu");
+
+        function toggleMenu() {
+            subMenu.classList.toggle("open-menu");
+        }
+
+        // Add an event listener to the logout link
+        document.getElementById("logoutLink").addEventListener("click", function (event) {
+            event.preventDefault(); // Prevent the default anchor behavior
+            document.getElementById("logoutForm").submit(); // Submit the form
+        });
+
+        const apiKey = "827db554784d6d5cd704af90e92577b4";
+        const weatherCurrent = document.querySelector(".weather-current");
+        const weatherDaily = document.querySelector(".weather-daily");
+        let latitude, longitude; // Declare latitude and longitude globally
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            } else {
+                weatherCurrent.innerHTML = "Geolocation is not supported by this browser.";
+            }
+        }
+
+        function showPosition(position) {
+            latitude = position.coords.latitude;
+            longitude = position.coords.longitude;
+            fetchWeatherData(latitude, longitude);
+        }
+
+        function showError(error) {
+            switch (error.code) {
+                case error.PERMISSION_DENIED:
+                    weatherCurrent.innerHTML = "User denied the request for Geolocation."
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    weatherCurrent.innerHTML = "Location information is unavailable."
+                    break;
+                case error.TIMEOUT:
+                    weatherCurrent.innerHTML = "The request to get user location timed out."
+                    break;
+                case error.UNKNOWN_ERROR:
+                    weatherCurrent.innerHTML = "An unknown error occurred."
+                    break;
+            }
+        }
+
+        function fetchWeatherData(latitude, longitude) {
+            const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const location = data.name;
+                    const date = new Date().toDateString();
+                    const temperature = data.main.temp;
+                    const weatherDescription = data.weather[0].description;
+                    const weatherIcon = `https://openweathermap.org/img/wn/${data.weather[0].icon}.png`;
+
+                    document.getElementById("location").textContent = location;
+                    document.getElementById("date").textContent = date;
+                    document.getElementById("temperature").textContent = `Temperature: ${temperature} °C`;
+                    document.getElementById("weather-description").textContent = `Weather: ${weatherDescription}`;
+                    document.getElementById("weather-icon").setAttribute("src", weatherIcon);
+
+                    // Once weather data is fetched, also fetch and display daily forecast
+                    getWeatherForecast();
+                })
+                .catch(error => {
+                    weatherCurrent.innerHTML = "Error fetching weather data.";
+                    console.error("Error fetching weather data:", error);
+                });
+        }
+
+        function getWeatherForecast() {
+            const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Weather Forecast API Response:", data); // Log the API response for debugging
+
+                    // Get today's date
+                    const today = new Date();
+                    const todayDateString = today.toISOString().split('T')[0];
+
+                    // Group forecasts by date
+                    const forecastByDay = {};
+                    data.list.forEach(item => {
+                        const forecastDate = new Date(item.dt * 1000);
+                        const dateKey = forecastDate.toISOString().split('T')[0]; // Get date in YYYY-MM-DD format
+                        if (!forecastByDay[dateKey]) {
+                            forecastByDay[dateKey] = [];
+                        }
+                        forecastByDay[dateKey].push(item);
+                    });
+
+                    // Select one forecast per day (e.g., the closest to noon)
+                    const dailyForecasts = [];
+                    for (const dateKey in forecastByDay) {
+                        if (dateKey > todayDateString) { // Ensure forecast starts from tomorrow
+                            const forecasts = forecastByDay[dateKey];
+                            const closestToNoon = forecasts.reduce((prev, curr) => {
+                                const prevHour = new Date(prev.dt * 1000).getHours();
+                                const currHour = new Date(curr.dt * 1000).getHours();
+                                return Math.abs(currHour - 12) < Math.abs(prevHour - 12) ? curr : prev;
+                            });
+                            dailyForecasts.push(closestToNoon);
+                        }
+                    }
+
+                    // Log the available forecast range for debugging
+                    console.log("Available forecast dates:", dailyForecasts.map(forecast => new Date(forecast.dt * 1000).toISOString().split('T')[0]));
+
+                    // Limit to the next 7 days if available
+                    const next7DaysForecasts = dailyForecasts.slice(0, 7);
+
+                    // Clear any existing forecast items
+                    weatherDaily.innerHTML = '';
+
+                    // Loop through daily forecasts and create HTML elements
+                    next7DaysForecasts.forEach(forecast => {
+                        const forecastDate = new Date(forecast.dt * 1000);
+                        const dayOfWeek = forecastDate.toLocaleDateString('en-US', { weekday: 'short', day: 'numeric', month: 'short' });
+                        const weatherIcon = `https://openweathermap.org/img/wn/${forecast.weather[0].icon}.png`;
+                        const temperature = `${forecast.main.temp.toFixed(2)}°C`; // Concatenate °C directly
+
+                        const feelsLike = `${forecast.main.feels_like.toFixed(2)}°C`; // Concatenate °C directly
+
+                        const forecastItem = document.createElement('div');
+                        forecastItem.classList.add('weather-daily-item');
+                        forecastItem.innerHTML = `
+                    <p>${dayOfWeek}</p>
+                    <img src="${weatherIcon}" alt="${forecast.weather[0].description}">
+                    <p>Temp: ${temperature}</p>
+                    <p>Feels like: ${feelsLike}</p>
+                `;
+                        // Append forecast item to weatherDaily container
+                        weatherDaily.appendChild(forecastItem);
+                    });
+                })
+                .catch(error => {
+                    console.error("Error fetching weather forecast:", error);
+                });
+        }
+
+        // Call getLocation when the page loads
+        window.onload = function () {
+            getLocation();
+        };
+    </script>
+</body>
+
+</html>
