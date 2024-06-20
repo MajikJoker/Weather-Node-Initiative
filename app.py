@@ -1,11 +1,16 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, g
 from pymongo import MongoClient
+import requests
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
 from dotenv import load_dotenv
 import os
 from flask_mail import Mail, Message
+from flask import Flask, request, jsonify
 import random
+from flask_cors import CORS
+
+
 
 # Load environment variables from .env file
 load_dotenv()
@@ -13,6 +18,7 @@ load_dotenv()
 # MongoDB connection
 mongo_uri = os.environ.get('MONGO_URI')
 client = MongoClient(mongo_uri)
+print(mongo_uri)
 
 # Adding in database and collection from MongoDB Atlas
 db = client["userManagement"]
@@ -20,13 +26,20 @@ users = db["users"]
 
 # Instantiating new object with "name"
 app = Flask(__name__)
+# Create CORS object
+cors = CORS()
+
+# Apply CORS to app
+cors.init_app(app, resources={r"/*": {"origins": "*"}})
+
 
 # Secret key
 app.secret_key = os.environ.get('SECRET_KEY')
 
 # Configure Flask-Mail
 app.config['MAIL_SERVER'] = os.environ.get('MAIL_SERVER')
-app.config['MAIL_PORT'] = int(os.environ.get('MAIL_PORT'))
+# app.config['MAIL_PORT'] = int(os.environ.get('MAIL_PORT'))
+app.config['MAIL_PORT'] = int(os.environ.get('MAIL_PORT', '587'))
 app.config['MAIL_USE_TLS'] = os.environ.get('MAIL_USE_TLS') == 'True'
 app.config['MAIL_USE_SSL'] = os.environ.get('MAIL_USE_SSL') == 'True'
 app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
@@ -56,6 +69,41 @@ def role_required(required_role):
 @app.route('/')
 def home():
     return render_template('home.html')
+
+
+@app.route('/history')
+def history():
+    return render_template('historydata.html')
+
+@app.route('/current')
+def current():
+    return render_template('currentdata.html')
+
+@app.route('/weather', methods=['POST'])
+def get_weather():
+    data = request.json
+    latitude = data['latitude']
+    longitude = data['longitude']
+    api_key="827db554784d6d5cd704af90e92577b4"
+    
+    # Define the API endpoint URL with placeholders
+    url = f"https://api.openweathermap.org/data/2.5/weather?lat={latitude}&lon={longitude}&appid={api_key}"
+
+    # Send a GET request to the API endpoint
+    response = requests.get(url)
+
+    # Check for successful response (status code 200)
+    if response.status_code == 200:
+        # Convert the JSON response to a Python dictionary
+        weather_data = response.json()
+        return jsonify(weather_data)
+    else:
+        return jsonify({
+            "error": f"API request failed with status code {response.status_code}",
+            "message": response.text
+        }), response.status_code
+
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
