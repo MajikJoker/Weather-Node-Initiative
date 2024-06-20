@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Usage Status</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .status-active {
+            color: green;
+        }
+
+        .status-inactive {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>API Usage Status</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>API Name</th>
+                <th>API Key</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Open Weather</td>
+                <td>827db554784d6d5cd704af90e92577b4</td>
+                <td class="status-active">Active</td>
+            </tr>
+            <tr>
+                <td>Weather Gov</td>
+                <td>-</td>
+                <td class="status-active">Active</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+
+</html>
