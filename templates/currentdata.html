@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Location Selector</title>
+</head>
+
+<body>
+    <h1>Select a Location</h1>
+    <select id="locationDropdown" onchange="sendLocation()">
+        <option value="">Select a location</option>
+        <!-- value="latitude,longitude" -->
+        <!-- <option value="1.35713333,103.90373333">Paya Lebar</option>
+        <option value="1.34180000,103.83390000">Macritchie Reservoir</option>
+        <option value="1.37003333,103.82706667">Lower Peirce Reservoir</option> -->
+    </select>
+
+    <div id="weatherDisplay" style="display: none;">
+        <!-- Weather information will be displayed here -->
+        <div class="weather">
+            <div class="top">
+                <div>
+                    <p class="city" id="cityName"></p>
+                    <p class="weather-description" id="weatherDescription"></p>
+                </div>
+                <img alt="weather" class="weather-icon" id="weatherIcon" />
+            </div>
+            <div class="bottom">
+                <p class="temperature" id="temperature"></p>
+                <div class="details">
+                    <div class="parameter-row">
+                        <span class="parameter-label">Details</span>
+                    </div>
+                    <div class="parameter-row">
+                        <span class="parameter-label">Feels like</span>
+                        <span class="parameter-value" id="feelsLike"></span>
+                    </div>
+                    <div class="parameter-row">
+                        <span class="parameter-label">Wind</span>
+                        <span class="parameter-value" id="windSpeed"></span>
+                    </div>
+                    <div class="parameter-row">
+                        <span class="parameter-label">Humidity</span>
+                        <span class="parameter-value" id="humidity"></span>
+                    </div>
+                    <div class="parameter-row">
+                        <span class="parameter-label">Pressure</span>
+                        <span class="parameter-value" id="pressure"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const stations = [
+            { station_code: "S06", station_name: "Paya Lebar", longitude: "103.90373333", latitude: "1.35713333" },
+            { station_code: "S07", station_name: "Macritchie Reservoir", longitude: "103.83390000", latitude: "1.34180000" },
+            { station_code: "S08", station_name: "Lower Peirce Reservoir", longitude: "103.82706667", latitude: "1.37003333" },
+            { station_code: "S101", station_name: "Jurong (North)", longitude: "103.71340000", latitude: "1.35053333" },
+            { station_code: "S102", station_name: "Semakau Island", longitude: "103.76571667", latitude: "1.19016667" },
+            { station_code: "S104", station_name: "Admiralty", longitude: "103.78538333", latitude: "1.44386667" },
+            { station_code: "S105", station_name: "Admiralty West", longitude: "103.79525000", latitude: "1.45816667" },
+            { station_code: "S106", station_name: "Pulau Ubin", longitude: "103.96730000", latitude: "1.41680000" },
+            { station_code: "S107", station_name: "East Coast Parkway", longitude: "103.96198333", latitude: "1.31331667" },
+            { station_code: "S108", station_name: "Marina Barrage", longitude: "103.87030000", latitude: "1.27991667" },
+            { station_code: "S109", station_name: "Ang Mo Kio", longitude: "103.85001667", latitude: "1.37926667" },
+            { station_code: "S11", station_name: "Choa Chu Kang (West)", longitude: "103.69373333", latitude: "1.37425000" },
+            { station_code: "S110", station_name: "Serangoon North", longitude: "103.87076667", latitude: "1.36531667" },
+            { station_code: "S111", station_name: "Newton", longitude: "103.83650000", latitude: "1.31055000" },
+            { station_code: "S112", station_name: "Lim Chu Kang", longitude: "103.70173333", latitude: "1.43880000" },
+            { station_code: "S113", station_name: "Marine Parade", longitude: "103.91121667", latitude: "1.30501667" },
+            { station_code: "S114", station_name: "Choa Chu Kang (Central)", longitude: "103.73810000", latitude: "1.38208333" },
+            { station_code: "S115", station_name: "Tuas South", longitude: "103.61840000", latitude: "1.29380000" },
+            { station_code: "S116", station_name: "Pasir Panjang", longitude: "103.75450000", latitude: "1.28235000" },
+            { station_code: "S117", station_name: "Jurong Island", longitude: "103.67900000", latitude: "1.25600000" },
+            { station_code: "S118", station_name: "Dhoby Ghaut", longitude: "103.84606667", latitude: "1.29940000" },
+            { station_code: "S119", station_name: "Nicoll Highway", longitude: "103.86218333", latitude: "1.29503333" },
+            { station_code: "S120", station_name: "Botanic Garden", longitude: "103.81801667", latitude: "1.30871667" },
+            { station_code: "S121", station_name: "Choa Chu Kang (South)", longitude: "103.71140000", latitude: "1.38580000" },
+            { station_code: "S122", station_name: "Khatib", longitude: "103.82513333", latitude: "1.41725000" },
+            { station_code: "S123", station_name: "Whampoa", longitude: "103.85765000", latitude: "1.32141667" },
+            { station_code: "S23", station_name: "Tengah", longitude: "103.71166667", latitude: "1.38500000" },
+            { station_code: "S24", station_name: "Changi", longitude: "103.98226667", latitude: "1.36776667" },
+            { station_code: "S25", station_name: "Seletar", longitude: "103.86500000", latitude: "1.41666667" },
+            { station_code: "S29", station_name: "Pasir Ris (West)", longitude: "103.94133333", latitude: "1.38650000" },
+            { station_code: "S31", station_name: "Kampong Bahru", longitude: "103.82816667", latitude: "1.27431667" },
+            { station_code: "S33", station_name: "Jurong Pier", longitude: "103.70986667", latitude: "1.30818333" },
+            { station_code: "S35", station_name: "Ulu Pandan", longitude: "103.75498333", latitude: "1.33246667" },
+            { station_code: "S36", station_name: "Serangoon", longitude: "103.86615000", latitude: "1.33765000" },
+            { station_code: "S39", station_name: "Jurong (East)", longitude: "103.73675000", latitude: "1.32516667" },
+            { station_code: "S40", station_name: "Mandai", longitude: "103.78320000", latitude: "1.40665000" },
+            { station_code: "S43", station_name: "Tai Seng", longitude: "103.88816667", latitude: "1.34061667" },
+            { station_code: "S44", station_name: "Jurong (West)", longitude: "103.68333333", latitude: "1.34523333" },
+            { station_code: "S46", station_name: "Upper Thomson", longitude: "103.81078333", latitude: "1.34155000" },
+            { station_code: "S50", station_name: "Clementi", longitude: "103.77611667", latitude: "1.33178333" },
+            { station_code: "S55", station_name: "Buangkok", longitude: "103.88603333", latitude: "1.38358333" },
+            { station_code: "S60", station_name: "Sentosa Island", longitude: "103.82753333", latitude: "1.25040000" },
+            { station_code: "S61", station_name: "Chai Chee", longitude: "103.92065000", latitude: "1.32710000" },
+            { station_code: "S63", station_name: "Boon Lay (West)", longitude: "103.70416667", latitude: "1.32746667" },
+            { station_code: "S64", station_name: "Bukit Panjang", longitude: "103.76066667", latitude: "1.38228333" },
+            { station_code: "S66", station_name: "Kranji Reservoir", longitude: "103.73601667", latitude: "1.43866667" },
+            { station_code: "S69", station_name: "Upper Peirce Reservoir", longitude: "103.80463333", latitude: "1.37035000" },
+            { station_code: "S71", station_name: "Kent Ridge", longitude: "103.78150000", latitude: "1.29230000" },
+            { station_code: "S72", station_name: "Tanjong Pagar", longitude: "103.84823333", latitude: "1.27388333" },
+            { station_code: "S77", station_name: "Queenstown", longitude: "103.81268333", latitude: "1.29360000" },
+            { station_code: "S78", station_name: "Tanjong Katong", longitude: "103.89066667", latitude: "1.30703333" },
+            { station_code: "S79", station_name: "Somerset (Road)", longitude: "103.83720000", latitude: "1.30040000" },
+            { station_code: "S80", station_name: "Sembawang", longitude: "103.82000000", latitude: "1.42500000" },
+            { station_code: "S81", station_name: "Punggol", longitude: "103.90948333", latitude: "1.40285000" },
+            { station_code: "S82", station_name: "Tuas West", longitude: "103.63520000", latitude: "1.32480000" },
+            { station_code: "S84", station_name: "Simei", longitude: "103.94405000", latitude: "1.34428333" },
+            { station_code: "S86", station_name: "Boon Lay (East)", longitude: "103.72046667", latitude: "1.32686667" },
+            { station_code: "S88", station_name: "Toa Payoh", longitude: "103.85150000", latitude: "1.34171667" },
+            { station_code: "S89", station_name: "Tuas", longitude: "103.66131667", latitude: "1.31985000" },
+            { station_code: "S90", station_name: "Bukit Timah", longitude: "103.81928333", latitude: "1.31910000" },
+            { station_code: "S91", station_name: "Yishun", longitude: "103.83061667", latitude: "1.43090000" }
+        ];
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const dropdown = document.getElementById('locationDropdown');
+
+            stations.forEach(station => {
+                const option = document.createElement('option');
+                option.value = `${station.latitude},${station.longitude}`;
+                option.textContent = station.station_name;
+                dropdown.appendChild(option);
+            });
+
+            // Optional: Select the first option by default
+            dropdown.selectedIndex = 0; // Index of the option you want to select initially
+        });
+        function sendLocation() {
+            const dropdown = document.getElementById('locationDropdown');
+            const selectedValue = dropdown.value;
+
+            if (selectedValue) {
+                const [latitude, longitude] = selectedValue.split(',');
+
+                fetch('/weather', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        latitude: parseFloat(latitude),
+                        longitude: parseFloat(longitude)
+                    })
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Update DOM with weather data
+                        document.getElementById('cityName').textContent = data.city;
+                        document.getElementById('weatherDescription').textContent = data.weather[0].description;
+                        document.getElementById('weatherIcon').src = `icons/${data.weather[0].icon}.png`;
+                        document.getElementById('temperature').textContent = `${Math.round(data.main.temp)}°C`;
+                        document.getElementById('feelsLike').textContent = `${Math.round(data.main.feels_like)}°C`;
+                        document.getElementById('windSpeed').textContent = `${data.wind.speed} m/s`;
+                        document.getElementById('humidity').textContent = `${data.main.humidity}%`;
+                        document.getElementById('pressure').textContent = `${data.main.pressure} hPa`;
+
+                        // Show the weather display div
+                        document.getElementById('weatherDisplay').style.display = 'block';
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+        }
+    </script>
+</body>
+
+</html>
