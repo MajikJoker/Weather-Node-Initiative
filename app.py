@@ -26,11 +26,7 @@ users = db["users"]
 
 # Instantiating new object with "name"
 app = Flask(__name__)
-# Create CORS object
-cors = CORS()
-
-# Apply CORS to app
-cors.init_app(app, resources={r"/*": {"origins": "*"}})
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 
 # Secret key
@@ -68,6 +64,7 @@ def role_required(required_role):
 # Routes
 @app.route('/')
 def home():
+    
     return render_template('home.html')
 
 
