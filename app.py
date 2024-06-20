@@ -70,7 +70,6 @@ def role_required(required_role):
 def home():
     return render_template('home.html')
 
-
 @app.route('/history')
 def history():
     return render_template('historydata.html')
