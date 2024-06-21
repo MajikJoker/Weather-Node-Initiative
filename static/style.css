@@ -15,6 +15,7 @@
     margin: 20px 0;
     border-radius: 10px;
     transition: transform 0.3s, opacity 0.3s;
+    transform: translateY(20px);
 }
 
 .intro h2, .features h2, .comparison h2 {
@@ -40,9 +41,40 @@
     opacity: 1;
 }
 
-.intro, .features, .comparison {
-    transform: translateY(20px);
-    opacity: 0;
+.feature-card {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.feature-card h3 {
+    margin-bottom: 10px;
+    color: #1a1a1a;
+}
+
+.feature-card p {
+    color: #525252;
+}
+
+/* Comparison Card Styles */
+.comparison-card {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.comparison-card ul {
+    margin-top: 10px;
+    padding-left: 20px;
+}
+
+.comparison-card ul li {
+    color: #525252;
+    margin-bottom: 5px;
 }
 
 /* Top Bar Styles */
