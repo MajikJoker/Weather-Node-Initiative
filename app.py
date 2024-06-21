@@ -119,10 +119,10 @@ def history():
 def current():
     return render_template('currentdata.html')
 
-@app.route('/secadmin')
-@role_required('secadmin')
-def secadmin():
-    return render_template('securityAdmin.html')
+# @app.route('/secadmin')
+# @role_required('secadmin')
+# def secadmin():
+#     return render_template('securityAdmin.html')
 
 @app.route('/weather', methods=['POST'])
 def get_weather():
@@ -259,10 +259,10 @@ def loggedhome():
 def sysadmin_dashboard():
     return render_template('sysadmin.html')
 
-# @app.route('/secadmin_dashboard')
-# @role_required('secadmin')
-# def secadmin_dashboard():
-#     return render_template('secadmin.html')
+@app.route('/secadmin_dashboard')
+@role_required('secadmin')
+def secadmin_dashboard():
+    return render_template('securityAdmin.html')
 
 @app.route('/logout', methods=['POST'])
 def logout():
