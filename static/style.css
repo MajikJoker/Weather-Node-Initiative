@@ -14,6 +14,14 @@
     padding: 40px 20px;
     margin: 20px 0;
     border-radius: 10px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.intro.animate, .features.animate, .comparison.animate {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .intro h2, .features h2, .comparison h2 {
@@ -60,28 +68,25 @@ nav {
     height: 40px;
 }
 
-.user-pic {
-    width: 40px;
-    border-radius: 50%;
+.auth-buttons {
+    display: flex;
+    align-items: center;
+}
+
+.auth-buttons .login-btn,
+.auth-buttons .register-btn {
+    background-color: #fff;
+    border: 2px solid #000;
+    padding: 10px 20px;
+    text-transform: uppercase;
     cursor: pointer;
-    margin-left: 30px;
-    z-index: 30;
+    margin-left: 10px;
 }
 
-nav ul {
-    width: 100%;
-    text-align: right;
-}
-
-nav ul li {
-    display: inline-block;
-    list-style: none;
-    margin: 10px 20px;
-}
-
-nav ul li a {
+.auth-buttons .login-btn:hover,
+.auth-buttons .register-btn:hover {
+    background-color: #000;
     color: #fff;
-    text-decoration: none;
 }
 
 /* User Profile Dropdown Styles */
@@ -218,185 +223,87 @@ nav ul li a {
     width: 100%;
     max-width: 460px;
     box-sizing: border-box;
-    margin: 0 auto; /* Center the box horizontally */
-    margin-top: 20px; /* Optional: Add top margin as needed */
 }
 
-.login-box h1,
-.register-box h1 {
-    margin-bottom: 30px;
-}
-
-.form-group {
+h1 {
     margin-bottom: 20px;
-    position: relative;
+    font-size: 36px;
+    font-weight: bold;
+    color: #333;
 }
 
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-    text-transform: uppercase;
-    font-size: 12px;
-    color: #555;
-    text-align: left;
+p {
+    margin-bottom: 30px;
+    font-size: 16px;
+    color: #666;
 }
 
-.form-group input {
+input[type="text"],
+input[type="password"],
+input[type="email"] {
     width: 100%;
-    padding: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 16px;
-    box-sizing: border-box;
 }
 
-.form-group .show-password {
-    position: absolute;
-    top: 65%;
-    right: 10px;
-    transform: translateY(-50%);
-    cursor: pointer;
-}
-
-.form-options {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    text-align: left;
-}
-
-.form-options label {
-    display: flex;
-    align-items: center;
-    font-size: 14px;
-    cursor: pointer;
-}
-
-.form-options input {
-    margin-right: 10px;
-}
-
-.form-options a {
-    font-size: 14px;
-    text-decoration: none;
-    color: #007BFF;
-}
-
-.submit-btn {
+button {
     background-color: #000;
     color: #fff;
-    padding: 15px 30px;
     border: none;
+    padding: 15px 30px;
     border-radius: 5px;
     font-size: 16px;
     cursor: pointer;
-    text-transform: uppercase;
+    transition: background-color 0.3s ease;
 }
 
-.terms {
-    display: flex;
-    align-items: center;
-    font-size: 16px;
+button:hover {
+    background-color: #333;
+}
+
+.error {
+    color: red;
+    font-size: 14px;
     margin-bottom: 20px;
-    text-align: left;
 }
 
-.terms input {
-    margin-right: 10px;
-    vertical-align: middle;
-    width: auto;
-    height: auto;
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #1a1a1a;
+    color: #fff;
 }
 
-.terms label {
-    display: flex;
-    align-items: center;
+footer p {
     margin: 0;
 }
 
-/* Add these styles at the end of your existing style.css file */
-
-.weather-forecast {
-    width: 100%;
-    max-width: 800px;
-    margin: 20px auto;
-    text-align: center;
+footer .navigation-buttons button {
+    margin: 0 5px;
 }
 
-.weather-current {
-    background-color: #bab7b7;
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-}
-
-.location-date {
-    text-align: left;
-}
-
-.location-date h2 {
-    margin-bottom: 10px;
-}
-
-.weather-icon img {
-    width: 100px;
-    height: 100px;
-}
-
-.weather-details {
-    text-align: right;
-}
-
-.weather-daily {
+ul {
+    list-style: none;
     display: flex;
-    justify-content: space-around; /* Adjust spacing between items */
-    flex-wrap: nowrap; /* Prevent items from wrapping onto a new line */
-    margin-top: 20px; /* Optional: Adjust top margin as needed */
 }
 
-.weather-daily-item {
-    background-color: #bab7b7;
-    padding: 10px;
-    border-radius: 10px;
-    width: calc(100% / 5 - 20px); /* Adjust width for 5 items per row */
-    box-sizing: border-box;
-    margin-bottom: 20px; /* Adjust bottom margin as needed */
-    text-align: center;
+ul li {
+    margin: 0 10px;
 }
 
-.weather-daily-item img {
-    width: 50px;
-    height: 50px;
-}
-
-.weather-daily-item p {
-    margin: 5px 0;
-}
-
-.navigation-buttons {
-    margin-top: 20px;
-    text-align: center;
-}
-
-.navigation-buttons button {
-    background-color: #4CAF50; /* Green */
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
+ul li a {
     text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 4px;
-    transition-duration: 0.4s;
+    color: #fff;
 }
 
-.navigation-buttons button:hover {
-    background-color: white;
-    color: black;
-    border: 2px solid #4CAF50;
+a:hover {
+    text-decoration: underline;
 }
 
+a {
+    text-decoration: none;
+    color: inherit;
+}
