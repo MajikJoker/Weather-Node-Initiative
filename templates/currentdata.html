@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='current.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <title>Location Selector</title>
 </head>
 
@@ -17,41 +18,113 @@
         <option value="1.37003333,103.82706667">Lower Peirce Reservoir</option> -->
     </select>
 
-    <div id="weatherDisplay" style="display: none;">
+    <!-- <div id="weatherDisplay" style="display: none;">
         <!-- Weather information will be displayed here -->
-        <div class="weather">
-            <div class="top">
-                <div>
-                    <p class="city" id="cityName"></p>
-                    <p class="weather-description" id="weatherDescription"></p>
-                </div>
-                <img alt="weather" class="weather-icon" id="weatherIcon" />
+    <div class="weather">
+        <div class="top">
+            <div>
+                <p class="city" id="cityName"></p>
+                <p class="weather-description" id="weatherDescription"></p>
             </div>
-            <div class="bottom">
-                <p class="temperature" id="temperature"></p>
-                <div class="details">
-                    <div class="parameter-row">
-                        <span class="parameter-label">Details</span>
-                    </div>
-                    <div class="parameter-row">
-                        <span class="parameter-label">Feels like</span>
-                        <span class="parameter-value" id="feelsLike"></span>
-                    </div>
-                    <div class="parameter-row">
-                        <span class="parameter-label">Wind</span>
-                        <span class="parameter-value" id="windSpeed"></span>
-                    </div>
-                    <div class="parameter-row">
-                        <span class="parameter-label">Humidity</span>
-                        <span class="parameter-value" id="humidity"></span>
-                    </div>
-                    <div class="parameter-row">
-                        <span class="parameter-label">Pressure</span>
-                        <span class="parameter-value" id="pressure"></span>
-                    </div>
+            <img alt="weather" class="weather-icon" id="weatherIcon" />
+        </div>
+        <div class="bottom">
+            <p class="temperature" id="temperature"></p>
+            <div class="details">
+                <div class="parameter-row">
+                    <span class="parameter-label">Details</span>
                 </div>
+                <div class="parameter-row">
+                    <span class="parameter-label">Feels like</span>
+                    <span class="parameter-value" id="feelsLike"></span>
+                </div>
+                <div class="parameter-row">
+                    <span class="parameter-label">Wind</span>
+                    <span class="parameter-value" id="windSpeed"></span>
+                </div>
+                <div class="parameter-row">
+                    <span class="parameter-label">Humidity</span>
+                    <span class="parameter-value" id="humidity"></span>
+                </div>
+                <div class="parameter-row">
+                    <span class="parameter-label">Pressure</span>
+                    <span class="parameter-value" id="pressure"></span>
+                </div>
+            </div>
+        </div> -->
+
+    </div>
+    <div class="top-bar">
+        <nav>
+            <img src="{{ url_for('static', filename='/sitepic/logo.png') }}" class="logo">
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Features</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+            <img src="{{ url_for('static', filename='/userpic/user.png') }}" class="user-pic" onclick="toggleMenu()">
+
+            <div class="sub-menu-wrap" id="subMenu">
+                <div class="sub-menu">
+                    <div class="user-info">
+                        <img src="{{ url_for('static', filename='/userpic/user.png') }}">
+                        <h3>{{ first_name }}</h3>
+                    </div>
+                    <hr>
+
+                    <a href="#" class="sub-menu-link">
+                        <img src="{{ url_for('static', filename='/sitepic/profile.png') }}">
+                        <p>Edit Profile</p>
+                        <span>></span>
+                    </a>
+                    <a href="#" class="sub-menu-link">
+                        <img src="{{ url_for('static', filename='/sitepic/setting.png') }}">
+                        <p>Settings & Privacy</p>
+                        <span>></span>
+                    </a>
+                    <a href="#" class="sub-menu-link">
+                        <img src="{{ url_for('static', filename='/sitepic/help.png') }}">
+                        <p>Help & Support</p>
+                        <span>></span>
+                    </a>
+                    <!-- Wrap the logout link in a form -->
+                    <form id="logoutForm" action="{{ url_for('logout') }}" method="POST" style="display: none;"></form>
+                    <a href="#" class="sub-menu-link" id="logoutLink">
+                        <img src="{{ url_for('static', filename='/sitepic/logout.png') }}">
+                        <p>Logout</p>
+                        <span>></span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Weather Forecast Display -->
+        <div class="weather-forecast">
+            <div class="weather-current">
+                <div class="location-date">
+                    <h2 id="location"></h2>
+                    <p id="date"></p>
+                </div>
+                <div class="weather-icon">
+                    <img id="weather-icon" src="" alt="Weather Icon">
+                </div>
+                <div class="weather-details">
+                    <p id="temperature"></p>
+                    <p id="weather-description"></p>
+                </div>
+            </div>
+            <div class="weather-daily" id="weatherDaily">
+                <!-- This section will be populated dynamically with JavaScript -->
+            </div>
+            <!-- Buttons for Current and History pages -->
+            <div class="navigation-buttons">
+                <button onclick="window.location.href='/current'">Current Weather</button>
+                <button onclick="window.location.href='/history'">Historical Weather</button>
             </div>
         </div>
+    </div>
+
     </div>
 
     <script>
