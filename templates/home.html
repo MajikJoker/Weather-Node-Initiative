@@ -17,6 +17,10 @@
             <li><a href="/about">About</a></li>
             <li><a href="/contact">Contact</a></li>
         </ul>
+        <div class="auth-buttons">
+            <button class="login-btn" onclick="window.location.href='/login'">Login</button>
+            <button class="register-btn" onclick="window.location.href='/register'">Register</button>
+        </div>
     </nav>
 
     <div class="container">
@@ -71,6 +75,27 @@
             </div>
         </footer>
     </div>
+
+    <script>
+        // JavaScript for animations
+        document.addEventListener("DOMContentLoaded", () => {
+            const sections = document.querySelectorAll("section");
+
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("animate");
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
 </body>
 
 </html>
