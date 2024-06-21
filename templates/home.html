@@ -8,22 +8,18 @@
 </head>
 
 <body>
-    <nav>
-        <div class="logo">
-            <img src="{{ url_for('static', filename='logo.png') }}" alt="WeatherNode Initiative Logo">
-        </div>
-        <ul>
-            <li><a href="/home">Home</a></li>
-            <li><a href="/about">About</a></li>
-            <li><a href="/contact">Contact</a></li>
-        </ul>
-        <div class="auth-buttons">
-            <button class="login-btn" onclick="window.location.href='/login'">Login</button>
-            <button class="register-btn" onclick="window.location.href='/register'">Register</button>
-        </div>
-    </nav>
-
     <div class="container">
+        <div class="header">
+            <a href="{{ url_for('home') }}" class="logoName">
+                <img src="{{ url_for('static', filename='/sitepic/logo.png') }}" alt="Logo">
+                <span>Weather Node Initiative</span>
+            </a>
+            <div class="auth-buttons">
+                <a href="{{ url_for('login') }}"><button class="login-btn">Login</button></a>
+                <a href="{{ url_for('register') }}"><button class="register-btn">Register</button></a>
+            </div>
+        </div>
+
         <header>
             <h1>Welcome to WeatherNode Initiative</h1>
             <p>Ensuring Secure and Efficient Communication for IoT Devices in Weather Forecasting</p>
@@ -38,17 +34,17 @@
 
         <section class="features">
             <h2>Key Features</h2>
-            <div class="feature-item">
+            <div class="feature-card">
                 <h3>Data Efficiency</h3>
                 <p>IBAS allows multiple signatures from different sensors to be aggregated into a single compact
                     signature, reducing communication overhead and improving network resource utilization.</p>
             </div>
-            <div class="feature-item">
+            <div class="feature-card">
                 <h3>Simplified Authentication</h3>
                 <p>Eliminates the need for exchanging and managing individual public keys or certificates, simplifying
                     authentication processes between sensors and our application.</p>
             </div>
-            <div class="feature-item">
+            <div class="feature-card">
                 <h3>Enhanced Security</h3>
                 <p>Aggregating multiple signatures into a single compact signature makes it more difficult for malicious
                     actors to tamper with individual signatures, enhancing overall security.</p>
@@ -57,22 +53,20 @@
 
         <section class="comparison">
             <h2>Why Choose WeatherNode Initiative?</h2>
-            <p>Unlike other weather forecasting apps such as those provided by NEA Singapore or Google Weather,
-                WeatherNode Initiative prioritizes data protection and security while maintaining efficient and reliable
-                application uptime.</p>
-            <ul>
-                <li>Ensures data authenticity and integrity through IBAS.</li>
-                <li>Reduces the likelihood of security breaches and service disruptions.</li>
-                <li>Maintains high system availability, building user trust.</li>
-            </ul>
+            <div class="comparison-card">
+                <p>Unlike other weather forecasting apps such as those provided by NEA Singapore or Google Weather,
+                    WeatherNode Initiative prioritizes data protection and security while maintaining efficient and
+                    reliable application uptime.</p>
+                <ul>
+                    <li>Ensures data authenticity and integrity through IBAS.</li>
+                    <li>Reduces the likelihood of security breaches and service disruptions.</li>
+                    <li>Maintains high system availability, building user trust.</li>
+                </ul>
+            </div>
         </section>
 
         <footer>
             <p>&copy; 2024 WeatherNode Initiative. All rights reserved.</p>
-            <div class="navigation-buttons">
-                <button onclick="window.location.href='/login'">Login</button>
-                <button onclick="window.location.href='/register'">Register</button>
-            </div>
         </footer>
     </div>
 
