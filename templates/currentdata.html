@@ -159,7 +159,7 @@
                         // Update DOM with weather data
                         document.getElementById('cityName').textContent = data.city;
                         document.getElementById('weatherDescription').textContent = data.weather[0].description;
-                        document.getElementById('weatherIcon').src = `icons/${data.weather[0].icon}.png`;
+                        document.getElementById('weatherIcon').src = `static/icons/${data.weather[0].icon}.png`;
                         document.getElementById('temperature').textContent = `${Math.round(data.main.temp)}°C`;
                         document.getElementById('feelsLike').textContent = `${Math.round(data.main.feels_like)}°C`;
                         document.getElementById('windSpeed').textContent = `${data.wind.speed} m/s`;
