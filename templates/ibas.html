@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signature Aggregation</title>
+</head>
+
+<body>
+    <h1>Signature Aggregation Results</h1>
+    <p><strong>Public Key (n, e):</strong> ({{ results.n }}, {{ results.e }})</p>
+    <p><strong>Private Key (d):</strong> {{ results.d }}</p>
+
+    <h2>Signatures</h2>
+    <ul>
+        {% for i in range(results.identities|length) %}
+        <li>
+            <p><strong>Identity {{ i + 1 }}:</strong> {{ results.identities[i] }}</p>
+            <p><strong>Message {{ i + 1 }}:</strong> {{ results.messages[i] }}</p>
+            <p><strong>H_ID {{ i + 1 }}:</strong> {{ results['H_ID_' ~ (i + 1)] }}</p>
+            <p><strong>DID {{ i + 1 }}:</strong> {{ results['DID_' ~ (i + 1)] }}</p>
+            <p><strong>H_M {{ i + 1 }}:</strong> {{ results['H_M_' ~ (i + 1)] }}</p>
+            <p><strong>Signature {{ i + 1 }}:</strong> {{ results.signatures[i] }}</p>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <h2>Aggregated Signature</h2>
+    <p><strong>Aggregated Signature:</strong> {{ results.aggregated_signature }}</p>
+    <p><strong>Is Valid:</strong> {{ results.is_valid }}</p>
+</body>
+
+</html>

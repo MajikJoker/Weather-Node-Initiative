@@ -269,6 +269,112 @@ def logout():
     session.pop('user', None)
     return redirect(url_for('home'))
 
+
+# Helper functions
+def generate_small_rsa_keys():
+    # Generate small RSA keys for simplicity
+    p = 61
+    q = 53
+    n = p * q
+    phi = (p - 1) * (q - 1)
+    e = 17
+    d = modinv(e, phi)
+    return (n, e), d
+
+def modinv(a, m):
+    # Compute the modular inverse of a modulo m
+    m0, x0, x1 = m, 0, 1
+    if m == 1:
+        return 0
+    while a > 1:
+        q = a // m
+        m, a = a % m, m
+        x0, x1 = x1 - q * x0, x0
+    if x1 < 0:
+        x1 += m0
+    return x1
+
+def compute_small_hash(data):
+    # Compute a simple hash function for the data
+    return sum(bytearray(data.encode('utf-8'))) % 100
+
+# Key generation
+public_key, d = generate_small_rsa_keys()
+n, e = public_key
+
+# User identity hash computation
+def compute_private_key_for_id(identity):
+    H_ID = compute_small_hash(identity)
+    DID = pow(H_ID, d, n)
+    return DID
+
+# Signing a message
+def sign_message(identity, message):
+    DID = compute_private_key_for_id(identity)
+    H_M = compute_small_hash(message)
+    sigma = (H_M * DID) % n
+    return sigma
+
+# Aggregation of signatures
+def aggregate_signatures(signatures):
+    sigma_agg = 1
+    for sigma in signatures:
+        sigma_agg = (sigma_agg * sigma) % n
+    return sigma_agg
+
+# Verification of aggregated signature
+def verify_aggregate_signature(identities, messages, sigma_agg):
+    P_agg = 1
+    H_M_prod = 1
+    for identity, message in zip(identities, messages):
+        H_ID = compute_small_hash(identity)
+        H_M = compute_small_hash(message)
+        P_agg = (P_agg * H_ID) % n
+        H_M_prod = (H_M_prod * H_M) % n
+
+    left = pow(sigma_agg, e, n)
+    right = (H_M_prod * P_agg) % n
+
+    return left == right
+
+@app.route('/ibas')
+def index():
+    identities = ["user1", "user2"]
+    messages = ["message1", "message2"]
+
+    # Generate individual signatures
+    signatures = [sign_message(identity, message) for identity, message in zip(identities, messages)]
+
+    # Aggregate signatures
+    sigma_agg = aggregate_signatures(signatures)
+
+    # Verify aggregated signature
+    is_valid = verify_aggregate_signature(identities, messages, sigma_agg)
+
+    # Collect results for display
+    results = {
+        "identities": identities,
+        "messages": messages,
+        "signatures": signatures,
+        "aggregated_signature": sigma_agg,
+        "is_valid": is_valid,
+        "n": n,
+        "e": e,
+        "d": d,
+    }
+
+    # Add individual intermediate values for debugging
+    for i, (identity, message) in enumerate(zip(identities, messages)):
+        H_ID = compute_small_hash(identity)
+        DID = compute_private_key_for_id(identity)
+        H_M = compute_small_hash(message)
+        results[f"H_ID_{i+1}"] = H_ID
+        results[f"DID_{i+1}"] = DID
+        results[f"H_M_{i+1}"] = H_M
+
+    return render_template('ibas.html', results=results)
+
+
 if __name__ == '__main__':
     app.debug = True
     app.run(host='0.0.0.0', port=8000)
