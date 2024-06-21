@@ -26,7 +26,43 @@ users = db["users"]
 
 # Instantiating new object with "name"
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app)
+
+@app.route('/proxy/climate-historical', methods=['OPTIONS', 'POST'])
+def proxy_climate_historical():
+    if request.method == 'OPTIONS':
+        # Handle preflight CORS request
+        return '', 204
+
+    url = "https://www.weather.gov.sg/wp-content/themes/wiptheme/page-functions/functions-climate-historical-daily-records.php"
+    headers = {'Content-Type': 'application/json'}
+    data = request.get_json()
+
+    try:
+        response = requests.post(url, json=data, headers=headers)
+        response.raise_for_status()  # Raise an HTTPError for bad responses (4xx and 5xx)
+    except requests.exceptions.RequestException as e:
+        return jsonify({'error': str(e)}), 500
+
+    return jsonify(response.json()), response.status_code
+
+@app.route('/proxy/warningbar', methods=['OPTIONS', 'POST'])
+def proxy_warningbar():
+    if request.method == 'OPTIONS':
+        # Handle preflight CORS request
+        return '', 204
+
+    url = "https://www.weather.gov.sg/wp-content/themes/wiptheme/page-functions/functions-ajax-warningbar.php"
+    headers = {'Content-Type': 'application/json'}
+    data = request.get_json()
+
+    try:
+        response = requests.post(url, json=data, headers=headers)
+        response.raise_for_status()  # Raise an HTTPError for bad responses (4xx and 5xx)
+    except requests.exceptions.RequestException as e:
+        return jsonify({'error': str(e)}), 500
+
+    return jsonify(response.json()), response.status_code
 
 
 # Secret key
@@ -77,6 +113,7 @@ def current():
     return render_template('currentdata.html')
 
 @app.route('/secadmin')
+@role_required('secadmin')
 def secadmin():
     return render_template('securityAdmin.html')
 
@@ -215,10 +252,10 @@ def loggedhome():
 def sysadmin_dashboard():
     return render_template('sysadmin.html')
 
-@app.route('/secadmin_dashboard')
-@role_required('secadmin')
-def secadmin_dashboard():
-    return render_template('secadmin.html')
+# @app.route('/secadmin_dashboard')
+# @role_required('secadmin')
+# def secadmin_dashboard():
+#     return render_template('secadmin.html')
 
 @app.route('/logout', methods=['POST'])
 def logout():
