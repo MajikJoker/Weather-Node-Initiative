@@ -14,6 +14,7 @@
     padding: 40px 20px;
     margin: 20px 0;
     border-radius: 10px;
+    transition: transform 0.3s, opacity 0.3s;
 }
 
 .intro h2, .features h2, .comparison h2 {
@@ -32,6 +33,16 @@
 
 .feature-item p, .comparison p, .comparison ul li {
     color: #525252;
+}
+
+.animate {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.intro, .features, .comparison {
+    transform: translateY(20px);
+    opacity: 0;
 }
 
 /* Top Bar Styles */
@@ -206,6 +217,14 @@ nav ul li a {
     padding: 10px 20px;
     text-transform: uppercase;
     cursor: pointer;
+    transition: background-color 0.3s, color 0.3s, transform 0.3s;
+}
+
+.register-btn:hover,
+.login-btn:hover {
+    background-color: #000;
+    color: #fff;
+    transform: scale(1.05);
 }
 
 .login-box,
@@ -399,4 +418,3 @@ nav ul li a {
     color: black;
     border: 2px solid #4CAF50;
 }
-
