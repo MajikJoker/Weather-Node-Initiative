@@ -37,7 +37,9 @@
 		function loadCSV() {
 			const selectedRegion = document.getElementById("regionSelect").value;
 			const tableContainer = document.getElementById("tableContainer");
-			fetch('/weather-node-initiative/templates/' + selectedRegion + '.csv')
+			const csvUrl = `/static/csv/${selectedRegion}.csv`;
+
+			fetch(csvUrl)
 				.then(response => response.text())
 				.then(data => {
 					const rows = data.split('\n');
