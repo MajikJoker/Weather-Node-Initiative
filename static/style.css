@@ -58,6 +58,21 @@
     color: #525252;
 }
 
+.slogan {
+    position: relative;
+    line-height: 1;
+    top: 0px; /* Changes the space between the logo and the slogan */
+    font-size: .7em; /* Changes the font size of the slogan */
+    font-style: italic; /* Changes the font style of the slogan */
+    color: #222222; /* Changes the color of the slogan */
+    letter-spacing: 0px; /* Changes the letter spacing of the slogan */
+}
+
+.title-and-slogan {
+    display: flex;
+    flex-direction: column;
+}
+
 /* Comparison Card Styles */
 .comparison-card {
     background-color: #ffffff;

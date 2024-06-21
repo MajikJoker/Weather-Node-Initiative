@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Weather Node Initiative</title>
-    <p>Ensuring Secure and Efficient Communication for IoT Devices in Weather Forecasting</p>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
@@ -13,7 +12,11 @@
         <div class="header">
             <a href="{{ url_for('home') }}" class="logoName">
                 <img src="{{ url_for('static', filename='/sitepic/logo.png') }}" alt="Logo">
-                <span>Weather Node Initiative</span>
+                <div class="title-and-slogan">
+                    <span>Weather Node Initiative</span>
+                    <div class="slogan">Ensuring Secure and Efficient Communication for IoT Devices in Weather
+                        Forecasting</div>
+                </div>
             </a>
             <div class="auth-buttons">
                 <a href="{{ url_for('login') }}"><button class="login-btn">Login</button></a>
