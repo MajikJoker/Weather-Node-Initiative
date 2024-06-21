@@ -551,13 +551,45 @@
 		viewClimate(cityname, month, year);
 	}
 
+	// function viewClimate(cityname, month, year) {
+	// 	var redirectUrl = "https://www.weather.gov.sg/weather-world-forecast";
+	// 	var url = "https://www.weather.gov.sg/wp-content/themes/wiptheme/page-functions/functions-climate-historical-daily-records.php";
+	// 	var data = { cityname: cityname, month: month, year: year, redirectUrl: redirectUrl };
+	// 	var options = { data: data, url: url };
+	// 	callAjax(options, showTempDetail);
+	// }
 	function viewClimate(cityname, month, year) {
-		var redirectUrl = "https://www.weather.gov.sg/weather-world-forecast";
-		var url = "https://www.weather.gov.sg/wp-content/themes/wiptheme/page-functions/functions-climate-historical-daily-records.php";
-		var data = { cityname: cityname, month: month, year: year, redirectUrl: redirectUrl };
-		var options = { data: data, url: url };
-		callAjax(options, showTempDetail);
+		var url = "/proxy/climate-historical";
+		var data = { cityname: cityname, month: month, year: year };
+
+		console.log('Fetching data from:', url);
+		console.log('Request payload:', data);
+
+		fetch(url, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'Accept': 'application/json',
+			},
+			body: JSON.stringify(data),
+			credentials: 'include',  // if cookies are needed for cross-origin requests
+		})
+			.then(response => {
+				console.log('Received response:', response);
+				if (!response.ok) {
+					throw new Error('Network response was not ok ' + response.statusText);
+				}
+				return response.json();
+			})
+			.then(data => {
+				console.log('Response data:', data);
+				showTempDetail(data);
+			})
+			.catch(error => {
+				console.error('There was a problem with your fetch operation:', error);
+			});
 	}
+
 
 	function callAjax(options, callback) {
 		fetch(options.url, {

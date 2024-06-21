@@ -32,7 +32,11 @@ CORS(app)
 def proxy_climate_historical():
     if request.method == 'OPTIONS':
         # Handle preflight CORS request
-        return '', 204
+        response = jsonify({'status': 'OK'})
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Access-Control-Allow-Methods', 'POST, OPTIONS')
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
+        return response, 204
 
     url = "https://www.weather.gov.sg/wp-content/themes/wiptheme/page-functions/functions-climate-historical-daily-records.php"
     headers = {'Content-Type': 'application/json'}
@@ -50,7 +54,11 @@ def proxy_climate_historical():
 def proxy_warningbar():
     if request.method == 'OPTIONS':
         # Handle preflight CORS request
-        return '', 204
+        response = jsonify({'status': 'OK'})
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Access-Control-Allow-Methods', 'POST, OPTIONS')
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
+        return response, 204
 
     url = "https://www.weather.gov.sg/wp-content/themes/wiptheme/page-functions/functions-ajax-warningbar.php"
     headers = {'Content-Type': 'application/json'}
@@ -63,7 +71,6 @@ def proxy_warningbar():
         return jsonify({'error': str(e)}), 500
 
     return jsonify(response.json()), response.status_code
-
 
 # Secret key
 app.secret_key = os.environ.get('SECRET_KEY')
