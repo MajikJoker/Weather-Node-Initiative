@@ -133,6 +133,7 @@
             dropdown.selectedIndex = 0; // Index of the option you want to select initially
         });
         function fetchWeatherData(latitude, longitude) {
+            const apiKey = "827db554784d6d5cd704af90e92577b4";
             const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`;
 
             fetch(url)
@@ -151,7 +152,7 @@
                     document.getElementById("weather-icon").setAttribute("src", weatherIcon);
 
                     // Once weather data is fetched, also fetch and display daily forecast
-                    getWeatherForecast();
+                    getWeatherForecast(arseFloat(latitude), parseFloat(longitude));
                 })
                 .catch(error => {
                     weatherCurrent.innerHTML = "Error fetching weather data.";
@@ -159,7 +160,8 @@
                 });
         }
 
-        function getWeatherForecast() {
+        function getWeatherForecast(latitude, longitude) {
+            const apiKey = "827db554784d6d5cd704af90e92577b4";
             const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`;
 
             fetch(url)
