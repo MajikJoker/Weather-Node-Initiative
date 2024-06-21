@@ -4,66 +4,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>API Usage Status</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            padding: 20px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        th,
-        td {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-
-        .status-active {
-            color: green;
-        }
-
-        .status-inactive {
-            color: red;
-        }
-    </style>
+    <title>Signature Aggregation</title>
 </head>
 
 <body>
-    <h1>API Usage Status</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>API Name</th>
-                <th>API Key</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Open Weather</td>
-                <td>827db554784d6d5cd704af90e92577b4</td>
-                <td class="status-active">Active</td>
-            </tr>
-            <tr>
-                <td>Weather Gov</td>
-                <td>-</td>
-                <td class="status-active">Active</td>
-            </tr>
-        </tbody>
-    </table>
-    <br>
-    <button onclick="window.location.href='/ibas';">View IBAS</button>
+    <div class="top-bar">
+        <nav>
+            <img src="{{ url_for('static', filename='/sitepic/logo.png') }}" class="logo">
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Features</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+            <img src="{{ url_for('static', filename='/userpic/user.png') }}" class="user-pic" onclick="toggleMenu()">
+
+            <div class="sub-menu-wrap" id="subMenu">
+                <div class="sub-menu">
+                    <div class="user-info">
+                        <img src="{{ url_for('static', filename='/userpic/user.png') }}">
+                        <h3>{{ first_name }}</h3>
+                    </div>
+                    <hr>
+
+                    <a href="#" class="sub-menu-link">
+                        <img src="{{ url_for('static', filename='/sitepic/profile.png') }}">
+                        <p>Edit Profile</p>
+                        <span>></span>
+                    </a>
+                    <a href="#" class="sub-menu-link">
+                        <img src="{{ url_for('static', filename='/sitepic/setting.png') }}">
+                        <p>Settings & Privacy</p>
+                        <span>></span>
+                    </a>
+                    <a href="#" class="sub-menu-link">
+                        <img src="{{ url_for('static', filename='/sitepic/help.png') }}">
+                        <p>Help & Support</p>
+                        <span>></span>
+                    </a>
+                    <!-- Wrap the logout link in a form -->
+                    <form id="logoutForm" action="{{ url_for('logout') }}" method="POST" style="display: none;"></form>
+                    <a href="#" class="sub-menu-link" id="logoutLink">
+                        <img src="{{ url_for('static', filename='/sitepic/logout.png') }}">
+                        <p>Logout</p>
+                        <span>></span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <h1>Signature Aggregation Results</h1>
+    <p><strong>Public Key (n, e):</strong> ({{ results.n }}, {{ results.e }})</p>
+    <p><strong>Private Key (d):</strong> {{ results.d }}</p>
+
+    <h2>Signatures</h2>
+    <ul>
+        {% for i in range(results.identities|length) %}
+        <li>
+            <p><strong>Identity {{ i + 1 }}:</strong> {{ results.identities[i] }}</p>
+            <p><strong>Message {{ i + 1 }}:</strong> {{ results.messages[i] }}</p>
+            <p><strong>H_ID {{ i + 1 }}:</strong> {{ results['H_ID_' ~ (i + 1)] }}</p>
+            <p><strong>DID {{ i + 1 }}:</strong> {{ results['DID_' ~ (i + 1)] }}</p>
+            <p><strong>H_M {{ i + 1 }}:</strong> {{ results['H_M_' ~ (i + 1)] }}</p>
+            <p><strong>Signature {{ i + 1 }}:</strong> {{ results.signatures[i] }}</p>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <h2>Aggregated Signature</h2>
+    <p><strong>Aggregated Signature:</strong> {{ results.aggregated_signature }}</p>
+    <p><strong>Is Valid:</strong> {{ results.is_valid }}</p>
+
+    <button onclick="location.href='{{ url_for('secadmin_dashboard') }}'">Return to Secadmin</button>
+
 </body>
 
 </html>

@@ -23,64 +23,108 @@
 </head>
 
 <body>
-	<h2>Select Region:</h2>
-	<select id="regionSelect" onchange="loadCSV()">
-		<option value="west">West</option>
-		<option value="north">North</option>
-		<option value="central">Central</option>
-		<option value="east">East</option>
-		<option value="south">South</option>
-	</select>
-	<div id="tableContainer"></div>
+	<div class="top-bar">
+		<nav>
+			<img src="{{ url_for('static', filename='/sitepic/logo.png') }}" class="logo">
+			<ul>
+				<li><a href="#">Home</a></li>
+				<li><a href="#">Features</a></li>
+				<li><a href="#">About</a></li>
+				<li><a href="#">Contact</a></li>
+			</ul>
+			<img src="{{ url_for('static', filename='/userpic/user.png') }}" class="user-pic" onclick="toggleMenu()">
 
-	<script>
-		function loadCSV() {
-			const selectedRegion = document.getElementById("regionSelect").value;
-			const tableContainer = document.getElementById("tableContainer");
-			const csvUrl = `/static/csv/${selectedRegion}.csv`;
+			<div class="sub-menu-wrap" id="subMenu">
+				<div class="sub-menu">
+					<div class="user-info">
+						<img src="{{ url_for('static', filename='/userpic/user.png') }}">
+						<h3>{{ first_name }}</h3>
+					</div>
+					<hr>
 
-			fetch(csvUrl)
-				.then(response => {
-					if (!response.ok) {
-						throw new Error('Network response was not ok');
-					}
-					return response.text();
-				})
-				.then(data => {
-					const rows = data.split('\n').map(row => row.trim());
-					let tableHTML = '<table><thead><tr>';
+					<a href="#" class="sub-menu-link">
+						<img src="{{ url_for('static', filename='/sitepic/profile.png') }}">
+						<p>Edit Profile</p>
+						<span>></span>
+					</a>
+					<a href="#" class="sub-menu-link">
+						<img src="{{ url_for('static', filename='/sitepic/setting.png') }}">
+						<p>Settings & Privacy</p>
+						<span>></span>
+					</a>
+					<a href="#" class="sub-menu-link">
+						<img src="{{ url_for('static', filename='/sitepic/help.png') }}">
+						<p>Help & Support</p>
+						<span>></span>
+					</a>
+					<!-- Wrap the logout link in a form -->
+					<form id="logoutForm" action="{{ url_for('logout') }}" method="POST" style="display: none;"></form>
+					<a href="#" class="sub-menu-link" id="logoutLink">
+						<img src="{{ url_for('static', filename='/sitepic/logout.png') }}">
+						<p>Logout</p>
+						<span>></span>
+					</a>
+				</div>
+			</div>
+		</nav>
+		<h2>Select Region:</h2>
+		<select id="regionSelect" onchange="loadCSV()">
+			<option value="west">West</option>
+			<option value="north">North</option>
+			<option value="central">Central</option>
+			<option value="east">East</option>
+			<option value="south">South</option>
+		</select>
+		<div id="tableContainer"></div>
 
-					// Process headers
-					const headers = rows[0].split(',').map(header => header.trim());
-					if (headers.length !== 13) {
-						throw new Error('CSV header does not contain exactly 13 columns');
-					}
-					headers.forEach(header => {
-						tableHTML += `<th>${header}</th>`;
-					});
-					tableHTML += '</tr></thead><tbody>';
+		<script>
+			function loadCSV() {
+				const selectedRegion = document.getElementById("regionSelect").value;
+				const tableContainer = document.getElementById("tableContainer");
+				const csvUrl = `/static/csv/${selectedRegion}.csv`;
 
-					// Process rows starting from the second row (index 1)
-					for (let i = 1; i < rows.length; i++) {
-						const columns = rows[i].split(',').map(column => column.trim());
-						if (columns.length === 13) {
-							tableHTML += '<tr>';
-							columns.forEach(column => {
-								tableHTML += `<td>${column}</td>`;
-							});
-							tableHTML += '</tr>';
+				fetch(csvUrl)
+					.then(response => {
+						if (!response.ok) {
+							throw new Error('Network response was not ok');
 						}
-					}
+						return response.text();
+					})
+					.then(data => {
+						const rows = data.split('\n').map(row => row.trim());
+						let tableHTML = '<table><thead><tr>';
 
-					tableHTML += '</tbody></table>';
-					tableContainer.innerHTML = tableHTML;
-				})
-				.catch(error => {
-					console.error('Error fetching CSV:', error);
-					tableContainer.innerHTML = '<p>Failed to load data. Please try again later.</p>';
-				});
-		}
-	</script>
+						// Process headers
+						const headers = rows[0].split(',').map(header => header.trim());
+						if (headers.length !== 13) {
+							throw new Error('CSV header does not contain exactly 13 columns');
+						}
+						headers.forEach(header => {
+							tableHTML += `<th>${header}</th>`;
+						});
+						tableHTML += '</tr></thead><tbody>';
+
+						// Process rows starting from the second row (index 1)
+						for (let i = 1; i < rows.length; i++) {
+							const columns = rows[i].split(',').map(column => column.trim());
+							if (columns.length === 13) {
+								tableHTML += '<tr>';
+								columns.forEach(column => {
+									tableHTML += `<td>${column}</td>`;
+								});
+								tableHTML += '</tr>';
+							}
+						}
+
+						tableHTML += '</tbody></table>';
+						tableContainer.innerHTML = tableHTML;
+					})
+					.catch(error => {
+						console.error('Error fetching CSV:', error);
+						tableContainer.innerHTML = '<p>Failed to load data. Please try again later.</p>';
+					});
+			}
+		</script>
 </body>
 
 </html>
