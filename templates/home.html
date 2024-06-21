@@ -73,7 +73,7 @@
     <script>
         // JavaScript for animations
         document.addEventListener("DOMContentLoaded", () => {
-            const sections = document.querySelectorAll("section");
+            const sections = document.querySelectorAll(".intro, .features, .comparison");
 
             const observer = new IntersectionObserver(entries => {
                 entries.forEach(entry => {
@@ -82,7 +82,7 @@
                     }
                 });
             }, {
-                threshold: 0.1
+                threshold: 0.1 // Adjust threshold as needed
             });
 
             sections.forEach(section => {

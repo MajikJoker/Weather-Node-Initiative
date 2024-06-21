@@ -15,6 +15,7 @@
     margin: 20px 0;
     border-radius: 10px;
     transition: transform 0.3s, opacity 0.3s;
+    transform: translateY(20px);
 }
 
 .intro h2, .features h2, .comparison h2 {
@@ -38,11 +39,6 @@
 .animate {
     transform: translateY(0);
     opacity: 1;
-}
-
-.intro, .features, .comparison {
-    transform: translateY(20px);
-    opacity: 0;
 }
 
 /* Top Bar Styles */
