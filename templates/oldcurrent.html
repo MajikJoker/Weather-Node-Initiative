@@ -132,104 +132,6 @@
             // Optional: Select the first option by default
             dropdown.selectedIndex = 0; // Index of the option you want to select initially
         });
-        function fetchWeatherData(latitude, longitude) {
-            const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`;
-
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    const location = data.name;
-                    const date = new Date().toDateString();
-                    const temperature = data.main.temp;
-                    const weatherDescription = data.weather[0].description;
-                    const weatherIcon = `https://openweathermap.org/img/wn/${data.weather[0].icon}.png`;
-
-                    document.getElementById("location").textContent = location;
-                    document.getElementById("date").textContent = date;
-                    document.getElementById("temperature").textContent = `Temperature: ${temperature} °C`;
-                    document.getElementById("weather-description").textContent = `Weather: ${weatherDescription}`;
-                    document.getElementById("weather-icon").setAttribute("src", weatherIcon);
-
-                    // Once weather data is fetched, also fetch and display daily forecast
-                    getWeatherForecast();
-                })
-                .catch(error => {
-                    weatherCurrent.innerHTML = "Error fetching weather data.";
-                    console.error("Error fetching weather data:", error);
-                });
-        }
-
-        function getWeatherForecast() {
-            const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`;
-
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    console.log("Weather Forecast API Response:", data); // Log the API response for debugging
-
-                    // Get today's date
-                    const today = new Date();
-                    const todayDateString = today.toISOString().split('T')[0];
-
-                    // Group forecasts by date
-                    const forecastByDay = {};
-                    data.list.forEach(item => {
-                        const forecastDate = new Date(item.dt * 1000);
-                        const dateKey = forecastDate.toISOString().split('T')[0]; // Get date in YYYY-MM-DD format
-                        if (!forecastByDay[dateKey]) {
-                            forecastByDay[dateKey] = [];
-                        }
-                        forecastByDay[dateKey].push(item);
-                    });
-
-                    // Select one forecast per day (e.g., the closest to noon)
-                    const dailyForecasts = [];
-                    for (const dateKey in forecastByDay) {
-                        if (dateKey > todayDateString) { // Ensure forecast starts from tomorrow
-                            const forecasts = forecastByDay[dateKey];
-                            const closestToNoon = forecasts.reduce((prev, curr) => {
-                                const prevHour = new Date(prev.dt * 1000).getHours();
-                                const currHour = new Date(curr.dt * 1000).getHours();
-                                return Math.abs(currHour - 12) < Math.abs(prevHour - 12) ? curr : prev;
-                            });
-                            dailyForecasts.push(closestToNoon);
-                        }
-                    }
-
-                    // Log the available forecast range for debugging
-                    console.log("Available forecast dates:", dailyForecasts.map(forecast => new Date(forecast.dt * 1000).toISOString().split('T')[0]));
-
-                    // Limit to the next 7 days if available
-                    const next7DaysForecasts = dailyForecasts.slice(0, 7);
-
-                    // Clear any existing forecast items
-                    weatherDaily.innerHTML = '';
-
-                    // Loop through daily forecasts and create HTML elements
-                    next7DaysForecasts.forEach(forecast => {
-                        const forecastDate = new Date(forecast.dt * 1000);
-                        const dayOfWeek = forecastDate.toLocaleDateString('en-US', { weekday: 'short', day: 'numeric', month: 'short' });
-                        const weatherIcon = `https://openweathermap.org/img/wn/${forecast.weather[0].icon}.png`;
-                        const temperature = `${forecast.main.temp.toFixed(2)}°C`; // Concatenate °C directly
-
-                        const feelsLike = `${forecast.main.feels_like.toFixed(2)}°C`; // Concatenate °C directly
-
-                        const forecastItem = document.createElement('div');
-                        forecastItem.classList.add('weather-daily-item');
-                        forecastItem.innerHTML = `
-                    <p>${dayOfWeek}</p>
-                    <img src="${weatherIcon}" alt="${forecast.weather[0].description}">
-                    <p>Temp: ${temperature}</p>
-                    <p>Feels like: ${feelsLike}</p>
-                `;
-                        // Append forecast item to weatherDaily container
-                        weatherDaily.appendChild(forecastItem);
-                    });
-                })
-                .catch(error => {
-                    console.error("Error fetching weather forecast:", error);
-                });
-        }
         function sendLocation() {
             const dropdown = document.getElementById('locationDropdown');
             const selectedValue = dropdown.value;
@@ -237,42 +139,39 @@
             if (selectedValue) {
                 const [latitude, longitude] = selectedValue.split(',');
 
-                // Call fetchWeatherData with extracted latitude and longitude
-                fetchWeatherData(parseFloat(latitude), parseFloat(longitude));
+                fetch('/weather', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        latitude: parseFloat(latitude),
+                        longitude: parseFloat(longitude)
+                    })
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Update DOM with weather data
+                        document.getElementById('cityName').textContent = data.city;
+                        document.getElementById('weatherDescription').textContent = data.weather[0].description;
+                        document.getElementById('weatherIcon').src = `static/icons/${data.weather[0].icon}.png`;
+                        document.getElementById('temperature').textContent = `${Math.round(data.main.temp)}°C`;
+                        document.getElementById('feelsLike').textContent = `${Math.round(data.main.feels_like)}°C`;
+                        document.getElementById('windSpeed').textContent = `${data.wind.speed} m/s`;
+                        document.getElementById('humidity').textContent = `${data.main.humidity}%`;
+                        document.getElementById('pressure').textContent = `${data.main.pressure} hPa`;
 
-                // fetch('/weather', {
-                //     method: 'POST',
-                //     headers: {
-                //         'Content-Type': 'application/json'
-                //     },
-                //     body: JSON.stringify({
-                //         latitude: parseFloat(latitude),
-                //         longitude: parseFloat(longitude)
-                //     })
-                // })
-                //     .then(response => {
-                //         if (!response.ok) {
-                //             throw new Error('Network response was not ok');
-                //         }
-                //         return response.json();
-                //     })
-                //     .then(data => {
-                //         // Update DOM with weather data
-                //         document.getElementById('cityName').textContent = data.city;
-                //         document.getElementById('weatherDescription').textContent = data.weather[0].description;
-                //         document.getElementById('weatherIcon').src = `static/icons/${data.weather[0].icon}.png`;
-                //         document.getElementById('temperature').textContent = `${Math.round(data.main.temp)}°C`;
-                //         document.getElementById('feelsLike').textContent = `${Math.round(data.main.feels_like)}°C`;
-                //         document.getElementById('windSpeed').textContent = `${data.wind.speed} m/s`;
-                //         document.getElementById('humidity').textContent = `${data.main.humidity}%`;
-                //         document.getElementById('pressure').textContent = `${data.main.pressure} hPa`;
-
-                //         // Show the weather display div
-                //         document.getElementById('weatherDisplay').style.display = 'block';
-                //     })
-                //     .catch(error => {
-                //         console.error('Error:', error);
-                //     });
+                        // Show the weather display div
+                        document.getElementById('weatherDisplay').style.display = 'block';
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
             }
         }
     </script>
