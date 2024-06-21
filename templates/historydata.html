@@ -580,7 +580,7 @@
 			}
 		}
 		document.getElementById('cityname').innerHTML = cityname + "<span></span>";
-		viewClimate(cityname, month, year);
+		//viewClimate(cityname, month, year);
 	}
 
 
@@ -669,7 +669,7 @@
 		var data = { stationCode: stationCode };
 		var options = { data: data, url: url };
 		window.station = stationCode;
-		callAjax(options, showYearDetail);
+		// callAjax(options, showYearDetail);
 	}
 
 	function showYearDetail(data) {
