@@ -52,7 +52,7 @@
 					// Start iterating from the second row (index 1)
 					for (let i = 1; i < rows.length; i++) {
 						const columns = rows[i].split(',');
-						if (columns.length === 13) { // Ensure there are exactly 13 columns in each row
+						if (columns.length === 13) {
 							tableHTML += '<tr>';
 							columns.forEach(column => {
 								tableHTML += `<td>${column}</td>`;
