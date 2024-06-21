@@ -100,7 +100,7 @@
 							throw new Error('CSV header does not contain exactly 13 columns');
 						}
 						headers.forEach(header => {
-							tableHTML += `<th>${header}</th>`;
+							tableHTML += `<th>${header.replace('�C', '°C')}</th>`;
 						});
 						tableHTML += '</tr></thead><tbody>';
 
@@ -110,7 +110,7 @@
 							if (columns.length === 13) {
 								tableHTML += '<tr>';
 								columns.forEach(column => {
-									tableHTML += `<td>${column}</td>`;
+									tableHTML += `<td>${column || '-'}</td>`;
 								});
 								tableHTML += '</tr>';
 							}
