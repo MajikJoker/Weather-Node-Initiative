@@ -274,8 +274,8 @@
 						</div>
 					</div>
 				</div>
-				<input type="button" value="Display" name="display" id="display" class="btn btn-default donotresize"
-					onclick="doDisplay();" />
+				<input type="button" value="download PDF" name="fetch PDF" id="display"
+					class="btn btn-default donotresize" onclick="downloadPDF();" />
 			</div>
 			<div class="row">
 				<div class="col-xs-12">
@@ -519,6 +519,36 @@
 		changePoint(cityname);
 		viewClimate(cityname, month, year);
 	}
+	// Global variables for year and month
+	var year = ''; // Initialize as empty string or set default value
+	var month = ''; // Initialize as empty string or set default value
+	var station = '';
+
+
+	function downloadPdf() {
+		// Construct the URL for the PDF based on your parameters
+		var station = $('#stationcode').text(); // Replace with actual station value
+		var year = $('#year').text(); // Replace with actual year value
+		var month = $('#year').text(); // Replace with actual month value
+		var url = `http://www.weather.gov.sg/files/dailydata/DAILYDATE_${station}_${year}${month}.pdf`;
+		console.log(url);
+		// Create a temporary anchor element
+		var link = document.createElement('a');
+		link.href = url;
+		link.target = '_blank'; // Open in a new tab/window
+		link.download = url.split('/').pop(); // Extract filename for download attribute (optional)
+
+		// Append the anchor element to the body
+		document.body.appendChild(link);
+
+		// Trigger the click event to initiate download
+		link.click();
+
+		// Clean up: Remove the anchor element from the document
+		document.body.removeChild(link);
+	}
+
+
 	function changePoint(cityname) {
 		var arr = document.getElementsByClassName("points");
 		resetPoints(arr);
@@ -538,6 +568,8 @@
 	function setText(sid) {
 		var month = $('#month').text();
 		var year = $('#year').text();
+		window.year = year;
+		window.month = month;
 		var cityname = sid.id;
 		var arr = document.getElementsByName("points");
 		for (var i = 0; i < arr.length; i++) {
@@ -551,13 +583,7 @@
 		viewClimate(cityname, month, year);
 	}
 
-	// function viewClimate(cityname, month, year) {
-	// 	var redirectUrl = "https://www.weather.gov.sg/weather-world-forecast";
-	// 	var url = "https://www.weather.gov.sg/wp-content/themes/wiptheme/page-functions/functions-climate-historical-daily-records.php";
-	// 	var data = { cityname: cityname, month: month, year: year, redirectUrl: redirectUrl };
-	// 	var options = { data: data, url: url };
-	// 	callAjax(options, showTempDetail);
-	// }
+
 	function viewClimate(cityname, month, year) {
 		var url = "/proxy/climate-historical";
 		var data = { cityname: cityname, month: month, year: year };
@@ -642,6 +668,7 @@
 		var url = "https://www.weather.gov.sg/wp-content/themes/wiptheme/page-functions/functions-climate-historical-daily-year.php";
 		var data = { stationCode: stationCode };
 		var options = { data: data, url: url };
+		window.station = stationCode;
 		callAjax(options, showYearDetail);
 	}
 
