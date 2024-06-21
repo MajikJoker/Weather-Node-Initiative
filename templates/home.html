@@ -3,14 +3,74 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Home</title>
+    <title>WeatherNode Initiative</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
 <body>
-    <h1>Welcome to the Home Page</h1>
-    <a href="/login">Login</a>
-    <a href="/register">Register</a>
+    <nav>
+        <div class="logo">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="WeatherNode Initiative Logo">
+        </div>
+        <ul>
+            <li><a href="/home">Home</a></li>
+            <li><a href="/about">About</a></li>
+            <li><a href="/contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <header>
+            <h1>Welcome to WeatherNode Initiative</h1>
+            <p>Ensuring Secure and Efficient Communication for IoT Devices in Weather Forecasting</p>
+        </header>
+
+        <section class="intro">
+            <h2>About WeatherNode Initiative</h2>
+            <p>WeatherNode Initiative uses Identity-Based Aggregate Signature (IBAS) to ensure secure communication for
+                IoT devices. By leveraging IBAS, we reduce the size of transmitted data, streamline authentication, and
+                enhance security, making our app more efficient and reliable.</p>
+        </section>
+
+        <section class="features">
+            <h2>Key Features</h2>
+            <div class="feature-item">
+                <h3>Data Efficiency</h3>
+                <p>IBAS allows multiple signatures from different sensors to be aggregated into a single compact
+                    signature, reducing communication overhead and improving network resource utilization.</p>
+            </div>
+            <div class="feature-item">
+                <h3>Simplified Authentication</h3>
+                <p>Eliminates the need for exchanging and managing individual public keys or certificates, simplifying
+                    authentication processes between sensors and our application.</p>
+            </div>
+            <div class="feature-item">
+                <h3>Enhanced Security</h3>
+                <p>Aggregating multiple signatures into a single compact signature makes it more difficult for malicious
+                    actors to tamper with individual signatures, enhancing overall security.</p>
+            </div>
+        </section>
+
+        <section class="comparison">
+            <h2>Why Choose WeatherNode Initiative?</h2>
+            <p>Unlike other weather forecasting apps such as those provided by NEA Singapore or Google Weather,
+                WeatherNode Initiative prioritizes data protection and security while maintaining efficient and reliable
+                application uptime.</p>
+            <ul>
+                <li>Ensures data authenticity and integrity through IBAS.</li>
+                <li>Reduces the likelihood of security breaches and service disruptions.</li>
+                <li>Maintains high system availability, building user trust.</li>
+            </ul>
+        </section>
+
+        <footer>
+            <p>&copy; 2024 WeatherNode Initiative. All rights reserved.</p>
+            <div class="navigation-buttons">
+                <button onclick="window.location.href='/login'">Login</button>
+                <button onclick="window.location.href='/register'">Register</button>
+            </div>
+        </footer>
+    </div>
 </body>
 
 </html>
