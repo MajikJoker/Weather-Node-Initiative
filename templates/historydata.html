@@ -37,8 +37,9 @@
 		function loadCSV() {
 			const selectedRegion = document.getElementById("regionSelect").value;
 			const tableContainer = document.getElementById("tableContainer");
+			const csvUrl = `/static/csv/${selectedRegion}.csv`;
 
-			fetch('{{ url_for("static", filename="csv/" + selectedRegion + ".csv") }}')
+			fetch(csvUrl)
 				.then(response => response.text())
 				.then(data => {
 					const rows = data.split('\n');

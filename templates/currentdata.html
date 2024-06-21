@@ -10,16 +10,7 @@
 </head>
 
 <body>
-    <h1>Select a Location</h1>
-    <select id="locationDropdown" onchange="sendLocation()">
-        <option value="">Select a location</option>
-        <!-- value="latitude,longitude" -->
-        <!-- <option value="1.35713333,103.90373333">Paya Lebar</option>
-        <option value="1.37003333,103.82706667">Lower Peirce Reservoir</option> -->
-    </select>
-
     <!-- <div id="weatherDisplay" style="display: none;">
-        <!-- Weather information will be displayed here -->
     <div class="weather">
         <div class="top">
             <div>
@@ -98,7 +89,13 @@
                 </div>
             </div>
         </nav>
-
+        <h1>Select a Location</h1>
+        <select id="locationDropdown" onchange="sendLocation()">
+            <option value="">Select a location</option>
+            <!-- value="latitude,longitude" -->
+            <!-- <option value="1.35713333,103.90373333">Paya Lebar</option>
+            <option value="1.37003333,103.82706667">Lower Peirce Reservoir</option> -->
+        </select>
         <!-- Weather Forecast Display -->
         <div class="weather-forecast">
             <div class="weather-current">
@@ -119,7 +116,7 @@
             </div>
             <!-- Buttons for Current and History pages -->
             <div class="navigation-buttons">
-                <button onclick="window.location.href='/current'">Current Weather</button>
+                <!-- <button onclick="window.location.href='/current'">Current Weather</button> -->
                 <button onclick="window.location.href='/history'">Historical Weather</button>
             </div>
         </div>
@@ -197,7 +194,7 @@
 
             stations.forEach(station => {
                 const option = document.createElement('option');
-                option.value = `${station.latitude},${station.longitude}`;
+                option.value = `${station.latitude},${station.longitude},${station.station_name}`;
                 option.textContent = station.station_name;
                 dropdown.appendChild(option);
             });
@@ -218,7 +215,7 @@
                     const weatherDescription = data.weather[0].description;
                     const weatherIcon = `https://openweathermap.org/img/wn/${data.weather[0].icon}.png`;
 
-                    document.getElementById("location").textContent = location;
+                    // document.getElementById("location").textContent = location;
                     document.getElementById("date").textContent = date;
                     document.getElementById("temperature").textContent = `Temperature: ${temperature} °C`;
                     document.getElementById("weather-description").textContent = `Weather: ${weatherDescription}`;
@@ -310,7 +307,8 @@
             const selectedValue = dropdown.value;
 
             if (selectedValue) {
-                const [latitude, longitude] = selectedValue.split(',');
+                const [latitude, longitude, station_name] = selectedValue.split(',');
+                document.getElementById("location").textContent = station_name;
 
                 // Call fetchWeatherData with extracted latitude and longitude
                 fetchWeatherData(parseFloat(latitude), parseFloat(longitude));
