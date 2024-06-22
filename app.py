@@ -339,8 +339,8 @@ def verify_aggregate_signature(identities, messages, sigma_agg):
 
 @app.route('/ibas')
 def index():
-    identities = ["user1", "user2"]
-    messages = ["message1", "message2"]
+    identities = ["Open Weather	", "Weather Gov	"]
+    messages = ["827db554784d6d5cd704af90e92577b4", "NA"]
 
     # Generate individual signatures
     signatures = [sign_message(identity, message) for identity, message in zip(identities, messages)]
