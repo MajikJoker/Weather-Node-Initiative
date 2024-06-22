@@ -8,51 +8,6 @@
 </head>
 
 <body>
-    <div class="top-bar">
-        <nav>
-            <img src="{{ url_for('static', filename='/sitepic/logo.png') }}" class="logo">
-            <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Features</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Contact</a></li>
-            </ul>
-            <img src="{{ url_for('static', filename='/userpic/user.png') }}" class="user-pic" onclick="toggleMenu()">
-
-            <div class="sub-menu-wrap" id="subMenu">
-                <div class="sub-menu">
-                    <div class="user-info">
-                        <img src="{{ url_for('static', filename='/userpic/user.png') }}">
-                        <h3>{{ first_name }}</h3>
-                    </div>
-                    <hr>
-
-                    <a href="#" class="sub-menu-link">
-                        <img src="{{ url_for('static', filename='/sitepic/profile.png') }}">
-                        <p>Edit Profile</p>
-                        <span>></span>
-                    </a>
-                    <a href="#" class="sub-menu-link">
-                        <img src="{{ url_for('static', filename='/sitepic/setting.png') }}">
-                        <p>Settings & Privacy</p>
-                        <span>></span>
-                    </a>
-                    <a href="#" class="sub-menu-link">
-                        <img src="{{ url_for('static', filename='/sitepic/help.png') }}">
-                        <p>Help & Support</p>
-                        <span>></span>
-                    </a>
-                    <!-- Wrap the logout link in a form -->
-                    <form id="logoutForm" action="{{ url_for('logout') }}" method="POST" style="display: none;"></form>
-                    <a href="#" class="sub-menu-link" id="logoutLink">
-                        <img src="{{ url_for('static', filename='/sitepic/logout.png') }}">
-                        <p>Logout</p>
-                        <span>></span>
-                    </a>
-                </div>
-            </div>
-        </nav>
-    </div>
 
     <h1>Signature Aggregation Results</h1>
     <h2>Setup</h2>
