@@ -119,10 +119,10 @@ def history():
 def current():
     return render_template('currentdata.html')
 
-# @app.route('/secadmin')
-# @role_required('secadmin')
-# def secadmin():
-#     return render_template('securityAdmin.html')
+@app.route('/secadmin')
+@role_required('secadmin')
+def secadmin():
+    return render_template('securityAdmin.html')
 
 @app.route('/weather', methods=['POST'])
 def get_weather():
