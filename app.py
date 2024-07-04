@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session, g
+from flask import Flask, render_template, request, redirect, url_for, flash, session, g, jsonify
 from pymongo import MongoClient
 import requests
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -6,11 +6,12 @@ from functools import wraps
 from dotenv import load_dotenv
 import os
 from flask_mail import Mail, Message
-from flask import Flask, request, jsonify
-import random
 from flask_cors import CORS
-
-
+from cryptography.hazmat.primitives import hashes #new addition
+from cryptography.hazmat.primitives.asymmetric import padding, rsa #new addition
+from cryptography.hazmat.primitives import serialization #new addition
+import base64 #new addition
+import random
 
 # Load environment variables from .env file
 load_dotenv()
@@ -23,10 +24,25 @@ print(mongo_uri)
 # Adding in database and collection from MongoDB Atlas
 db = client["userManagement"]
 users = db["users"]
+weather_data_db = client["weather_data"] #new addition
 
 # Instantiating new object with "name"
 app = Flask(__name__)
 CORS(app)
+
+# Secret key
+app.secret_key = os.environ.get('SECRET_KEY')
+
+# Configure Flask-Mail
+app.config['MAIL_SERVER'] = os.environ.get('MAIL_SERVER')
+# app.config['MAIL_PORT'] = int(os.environ.get('MAIL_PORT'))
+app.config['MAIL_PORT'] = int(os.environ.get('MAIL_PORT', '587'))
+app.config['MAIL_USE_TLS'] = os.environ.get('MAIL_USE_TLS') == 'True'
+app.config['MAIL_USE_SSL'] = os.environ.get('MAIL_USE_SSL') == 'True'
+app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
+
+mail = Mail(app)
 
 @app.route('/proxy/climate-historical', methods=['OPTIONS', 'POST'])
 def proxy_climate_historical():
@@ -71,20 +87,6 @@ def proxy_warningbar():
         return jsonify({'error': str(e)}), 500
 
     return jsonify(response.json()), response.status_code
-
-# Secret key
-app.secret_key = os.environ.get('SECRET_KEY')
-
-# Configure Flask-Mail
-app.config['MAIL_SERVER'] = os.environ.get('MAIL_SERVER')
-# app.config['MAIL_PORT'] = int(os.environ.get('MAIL_PORT'))
-app.config['MAIL_PORT'] = int(os.environ.get('MAIL_PORT', '587'))
-app.config['MAIL_USE_TLS'] = os.environ.get('MAIL_USE_TLS') == 'True'
-app.config['MAIL_USE_SSL'] = os.environ.get('MAIL_USE_SSL') == 'True'
-app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
-app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
-
-mail = Mail(app)
 
 def role_required(required_role):
     def decorator(f):
