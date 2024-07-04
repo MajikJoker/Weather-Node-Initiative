@@ -6,4 +6,3 @@ python-dotenv==1.0.1
 Flask-Mail==0.9.1
 requests==2.27.1
 flask_cors==3.0.10
-cryptography==3.4.7
